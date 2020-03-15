@@ -3,7 +3,8 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Link
+  Link,
+  useHistory
 } from "react-router-dom";
 import Home from "./components/Home";
 import About from "./components/About";
@@ -40,6 +41,12 @@ export default function App() {
 }
 
 function Nav() {
+
+  const history = useHistory();
+  if (!localStorage.getItem('login_check')) {
+      history.push('login')
+  }
+  
   return (
 
     <nav>
@@ -52,6 +59,9 @@ function Nav() {
         </li>
         <li>
           <Link to="/users">Users</Link>
+        </li>
+        <li>
+          <Link to="/" onClick={localStorage.clear()}>Log Out</Link>
         </li>
       </ul>
     </nav>
