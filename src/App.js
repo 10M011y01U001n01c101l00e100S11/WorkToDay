@@ -5,35 +5,32 @@ import {
   Route,
   Link
 } from "react-router-dom";
+import Home from "./components/Home";
+import About from "./components/About";
+import Users from "./components/Users";
+import Login from "./components/Login";
 
 export default function App() {
+
   return (
     <Router>
       <div>
-        <nav>
-          <ul>
-            <li>
-              <Link to="/">Home</Link>
-            </li>
-            <li>
-              <Link to="/about">About</Link>
-            </li>
-            <li>
-              <Link to="/users">Users</Link>
-            </li>
-          </ul>
-        </nav>
-
         {/* A <Switch> looks through its children <Route>s and
             renders the first one that matches the current URL. */}
         <Switch>
+          <Route path="/login">
+            <Login />
+          </Route>
           <Route path="/about">
+            <Nav />
             <About />
           </Route>
           <Route path="/users">
+            <Nav />
             <Users />
           </Route>
           <Route path="/">
+            <Nav />
             <Home />
           </Route>
         </Switch>
@@ -42,14 +39,21 @@ export default function App() {
   );
 }
 
-function Home() {
-  return <h2>Home</h2>;
-}
+function Nav() {
+  return (
 
-function About() {
-  return <h2>About</h2>;
-}
-
-function Users() {
-  return <h2>Users</h2>;
+    <nav>
+      <ul>
+        <li>
+          <Link to="/">Home</Link>
+        </li>
+        <li>
+          <Link to="/about">About</Link>
+        </li>
+        <li>
+          <Link to="/users">Users</Link>
+        </li>
+      </ul>
+    </nav>
+  )
 }
