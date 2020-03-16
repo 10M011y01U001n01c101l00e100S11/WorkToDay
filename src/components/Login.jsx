@@ -68,19 +68,23 @@ export default function Login() {
     const { value: password, bind: bindPassword, reset: resetPassword } = useInput('');
 
     const history = useHistory();
-    const onSubmitLogin = () => FirestoreService.getUsersLogin(username, password).then(async data => {
-        resetUsername()
-        resetPassword()
-        if (data) {
-            await localStorage.setItem('login_check', true)
-            await localStorage.setItem('login_data', data)
-            await localStorage.setItem('login_username', username)
-            await localStorage.setItem('login_password', password)
-            await history.push('home')
-        } else {
-            alert('Error')
+    const onSubmitLogin = () => FirestoreService.getUsersLogin().on('child_added', async function (data) {
+        if (username === data.val().username && password === data.val().password) {
+            resetUsername()
+            resetPassword()
+            if (data) {
+                await localStorage.setItem('login_check', true)
+                await localStorage.setItem('login_data', JSON.stringify(data.val()))
+                await localStorage.setItem('login__key', data.val()._key)
+                await localStorage.setItem('login_username', username)
+                await localStorage.setItem('login_password', password)
+                await history.push('home')
+            } else {
+                alert('Error')
+            }
         }
-    })
+    });
+
     return (
         <Grid container component="main" className={classes.root}>
             <CssBaseline />

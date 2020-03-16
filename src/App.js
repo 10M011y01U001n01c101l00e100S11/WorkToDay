@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   BrowserRouter as Router,
   Switch,
@@ -10,6 +10,7 @@ import Home from "./components/Home";
 import About from "./components/About";
 import Users from "./components/Users";
 import Login from "./components/Login";
+import AddUsers from "./components/AddUsers";
 
 export default function App() {
 
@@ -30,6 +31,10 @@ export default function App() {
             <Nav />
             <Users />
           </Route>
+          <Route path="/addusers">
+            <Nav />
+            <AddUsers />
+          </Route>
           <Route path="/">
             <Nav />
             <Home />
@@ -43,10 +48,11 @@ export default function App() {
 function Nav() {
 
   const history = useHistory();
-  if (!localStorage.getItem('login_check')) {
-      history.push('login')
-  }
-  
+  useEffect(() => {
+    if (!localStorage.getItem('login_check')) {
+        history.push('login')
+    }
+  })
   return (
 
     <nav>
@@ -61,7 +67,10 @@ function Nav() {
           <Link to="/users">Users</Link>
         </li>
         <li>
-          <Link to="/" onClick={localStorage.clear()}>Log Out</Link>
+          <Link to="/addusers">AddUsers</Link>
+        </li>
+        <li>
+          <Link to="/" onClick={() => localStorage.clear()}>Log Out</Link>
         </li>
       </ul>
     </nav>
