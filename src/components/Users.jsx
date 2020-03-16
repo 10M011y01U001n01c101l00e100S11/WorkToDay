@@ -33,7 +33,6 @@ const useStyles = makeStyles(theme => ({
 export default function Users() {
   const classes = useStyles();
   const [userData, setUserData] = useState([])
-
   document.title = 'Work To Day | Users';
   useEffect(() => {
     FirestoreService.getUsers().on("value", snapshot => {
@@ -48,10 +47,6 @@ export default function Users() {
       setUserData(array);
     });
   }, [])
-  setTimeout(() => {
-    console.log(userData);
-  }, 1000);
-
   return (
     <Container>
       <div className={classes.root}>

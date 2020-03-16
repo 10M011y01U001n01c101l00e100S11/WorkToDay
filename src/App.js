@@ -50,8 +50,11 @@ function Nav() {
   const history = useHistory();
   useEffect(() => {
     if (!localStorage.getItem('login_check')) {
-        history.push('login')
+      history.push('login')
     }
+    fetch('https://api.ipify.org/?format=json')
+      .then((e) => e.json())
+      .then((e) => e.ip)
   })
   return (
 

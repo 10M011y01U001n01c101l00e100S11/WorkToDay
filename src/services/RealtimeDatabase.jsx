@@ -23,6 +23,10 @@ export const getUsersLogin = (user, pass) => {
     return db.ref('tb_user')
 };
 
+export const getCheckInUsers = (user, pass) => {
+    return db.ref('tb_check').child(localStorage.getItem('login__key'))
+};
+
 export const setCheckIn = (user = localStorage.getItem('login_username'), pass = localStorage.getItem('login_password')) => {
     let newKey = db.ref().child(`tb_check/${localStorage.getItem('login__key')}`).push().key;
     let updates = {};
@@ -51,3 +55,8 @@ export const addUsers = (username = '', password = '', lastname = '', img = '', 
     updates[`/tb_user/` + newKey] = list;
     return db.ref().update(updates)
 };
+
+
+export const fetchIP = () => {
+   return fetch('https://api.ipify.org/?format=json').then((e) => e.json()).then(e => (e.ip))
+}
