@@ -23,10 +23,10 @@ export default function App() {
           <Route path="/login">
             <Login />
           </Route>
-          <Route path="/about">
+          {/* <Route path="/about">
             <Nav />
             <About />
-          </Route>
+          </Route> */}
           <Route path="/users">
             <Nav />
             <Users />
@@ -63,9 +63,9 @@ function Nav() {
         <li>
           <Link to="/">Home</Link>
         </li>
-        <li>
+        {/* <li>
           <Link to="/about">About</Link>
-        </li>
+        </li> */}
         <li>
           <Link to="/users">Users</Link>
         </li>

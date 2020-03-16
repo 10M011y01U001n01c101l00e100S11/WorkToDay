@@ -8,6 +8,7 @@ import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Avatar from '@material-ui/core/Avatar';
 import WorkIcon from '@material-ui/icons/Work';
 import moment from "moment";
+import { ListItemSecondaryAction, IconButton } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -17,20 +18,19 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-export default function CheckIn({CheckInData}) {
+export default function CheckIn({ CheckInData }) {
     const classes = useStyles();
-  document.title = 'Work To Day | Users';
+    document.title = 'Work To Day | Users';
     return (
         <List className={classes.root}>
             {CheckInData?.reverse().map(({ _key, check_in, check_out, check_user, work_list }) => (
-
                 <ListItem>
                     <ListItemAvatar>
                         <Avatar>
                             <WorkIcon />
                         </Avatar>
                     </ListItemAvatar>
-                    <ListItemText primary={work_list} secondary={'Check In: ' + moment(check_in).format('LL HH:mm:ss') } />
+                    <ListItemText primary={work_list} secondary={'Check In: ' + moment(check_in).format('LL HH:mm:ss')} />
                 </ListItem>
             ))}
         </List>
