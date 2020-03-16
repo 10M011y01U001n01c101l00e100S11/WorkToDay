@@ -30,7 +30,7 @@ export default function CheckIn({CheckInData}) {
                             <WorkIcon />
                         </Avatar>
                     </ListItemAvatar>
-                    <ListItemText primary={work_list} secondary={'Check In: ' + moment(check_in).format('LL HH:mm') } />
+                    <ListItemText primary={work_list} secondary={'Check In: ' + moment(check_in).format('LL HH:mm:ss') } />
                 </ListItem>
             ))}
         </List>
