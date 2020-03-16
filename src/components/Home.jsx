@@ -1,6 +1,6 @@
 import React from "react";
 import * as FirestoreService from '../services/RealtimeDatabase';
-import { Button } from "@material-ui/core";
+import { Button, Container } from "@material-ui/core";
 
 export default function Home() {
     document.title = 'Work To Day';
@@ -8,7 +8,7 @@ export default function Home() {
         FirestoreService.setCheckIn()
     }
     return (
-        <div>
+        <Container>
             <Button
                 type="button"
                 fullWidth
@@ -18,6 +18,6 @@ export default function Home() {
             >
                 Check In
             </Button>
-        </div>
+        </Container>
     );
 }

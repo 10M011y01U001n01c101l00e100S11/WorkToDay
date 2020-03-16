@@ -2,6 +2,7 @@ import React from "react";
 import { TextField, Container, Grid, Button } from "@material-ui/core";
 import { useInput } from "../hooks/input-hook";
 import * as FirestoreService from '../services/RealtimeDatabase';
+import Users from "./Users";
 
 export default function AddUsers() {
     document.title = 'Work To Day | Add Users';
@@ -46,6 +47,7 @@ export default function AddUsers() {
                         </Grid>
                     </Grid>
                 </form>
+                <Users />
             </Container>
         </>
     );

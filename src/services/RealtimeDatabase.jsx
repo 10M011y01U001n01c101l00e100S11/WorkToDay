@@ -16,7 +16,7 @@ firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
 export const getUsers = () => {
-    return db.ref('tb_user').once('value')
+    return db.ref('tb_user')
 };
 
 export const getUsersLogin = (user, pass) => {
@@ -43,7 +43,7 @@ export const addUsers = (username = '', password = '', lastname = '', img = '', 
     const list = {
         "_key": newKey,
         "fristname": fristname,
-        "img": img || 'https://drive.google.com/?tab=io1&authuser=0',
+        "img": img || 'https://f0.pngfuel.com/png/980/886/male-portrait-avatar-png-clip-art.png',
         "lastname": lastname,
         "password": password,
         "username": username
