@@ -30,7 +30,10 @@ export default function CheckIn({ CheckInData }) {
                             <WorkIcon />
                         </Avatar>
                     </ListItemAvatar>
-                    <ListItemText style={{ minWidth: 'fit-content' }} primary={work_list} secondary={<>Check In At: {moment(check_in).format('LL HH:mm:ss')}<br />Check Out At: {moment(check_out).format('LL HH:mm:ss').replace('Invalid date', '-')}</>} />
+                    <ListItemText style={{ minWidth: 'fit-content' }} primary={"Time's " + moment(check_in).toNow()} secondary={<>Check In At: {moment(check_in).format('LL HH:mm:ss')}<br />
+                    Check Out At: {moment(check_out).format('LL HH:mm:ss').replace('Invalid date', '-')}<br/>
+                    Time's {moment(check_out).diff(moment(check_in), 'hour') || '00'}:{moment(check_out).diff(moment(check_in), 'minute') || '00'}:{moment(check_out).diff(moment(check_in), 'second') || '00'}
+                    </>} />
                 </ListItem>
             ))}
         </List>

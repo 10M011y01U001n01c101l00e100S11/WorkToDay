@@ -31,7 +31,6 @@ export default function Home() {
         });
     }, [])
 
-    console.log(moment().diff(moment(userCheckData?.[0]?.check_in), 'second'));
 
 
     return (
