@@ -11,6 +11,7 @@ import AddUsers from "./components/AddUsers";
 import ProminentAppBar from "./components/ProminentAppBar";
 import AddUsersAppBar from "./components/AddUsersAppBar";
 import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
+import CheckHistory from "./components/CheckHistory";
 
 const theme = createMuiTheme({
 
@@ -39,17 +40,24 @@ export default function App() {
             <Login />
           </Route>
           <Route path="/users">
-            {localStorage.getItem('login_role') === 'admin' ? <ProminentAppBar /> : <AddUsersAppBar />}
+            {localStorage.getItem('login_role') === 'admin' ? <ProminentAppBar appBar={'ระบบแสดงข้อมูลผู้ใช้งาน'} /> : <AddUsersAppBar appBar={'ระบบแสดงข้อมูลผู้ใช้งาน'} />}
             <Users />
           </Route>
           <Route path="/addusers">
-            {localStorage.getItem('login_role') === 'admin' ? <ProminentAppBar /> : <AddUsersAppBar />}
+            {localStorage.getItem('login_role') === 'admin' ? <ProminentAppBar appBar={'ระบบเพิ่มข้อมูลผู้ใช้งาน'} /> : <AddUsersAppBar appBar={'ระบบเพิ่มข้อมูลผู้ใช้งาน'} />}
             <AddUsers />
           </Route>
+
+          <Route path="/checkhistory">
+            {localStorage.getItem('login_role') === 'admin' ? <ProminentAppBar appBar={'ระบบแสดงประวัติการเข้าออกงาน'} /> : <AddUsersAppBar appBar={'ระบบแสดงประวัติการเข้าออกงาน'} />}
+            <CheckHistory />
+          </Route>
+
           <Route path="/">
-            {localStorage.getItem('login_role') === 'admin' ? <ProminentAppBar /> : <AddUsersAppBar />}
+            {localStorage.getItem('login_role') === 'admin' ? <ProminentAppBar appBar={'ระบบบันทึกการเข้าออกงาน'} /> : <AddUsersAppBar appBar={'ระบบบันทึกการเข้าออกงาน'} />}
             <Home />
           </Route>
+
         </Switch>
       </ThemeProvider>
     </Router>

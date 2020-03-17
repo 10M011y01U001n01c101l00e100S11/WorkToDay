@@ -7,6 +7,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import MenuIcon from '@material-ui/icons/Menu';
 import { useHistory } from 'react-router-dom';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import HistoryIcon from '@material-ui/icons/History';
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
@@ -26,7 +27,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function AddUsersAppBar() {
+export default function AddUsersAppBar({appBar}) {
   const classes = useStyles();
   const history = useHistory();
 
@@ -47,9 +48,14 @@ export default function AddUsersAppBar() {
           >
             <MenuIcon />
           </IconButton>
+
           <Typography className={classes.title} variant="h5" noWrap>
-            ระบบเพิ่มข้อมูลผู้ใช้งาน
+            {appBar}
           </Typography>
+
+          <IconButton aria-label="search" color="inherit" onClick={() => history.push('checkhistory')}>
+            <HistoryIcon />
+          </IconButton>
 
           <IconButton aria-label="search" color="inherit" onClick={() => {localStorage.clear();history.push('login')}}>
             <ExitToAppIcon />

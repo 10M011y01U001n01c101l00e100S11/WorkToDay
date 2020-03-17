@@ -1,23 +1,31 @@
 import React, { useState, useEffect } from "react";
 import * as FirestoreService from '../services/RealtimeDatabase';
-import { Button, Container } from "@material-ui/core";
-import CheckIn from "./CheckIn";
+import { Button, Container, Grid } from "@material-ui/core";
 import moment from "moment";
 import { useHistory } from "react-router-dom";
+import Paper from '@material-ui/core/Paper';
+
 
 export default function Home() {
     document.title = 'Work To Day';
     const [userCheckData, setCheckUserData] = useState([])
     const [fetchIP, setFetchIP] = useState([])
+    const [timeming, setTimeming] = useState(moment())
     const history = useHistory();
+
     const onCheckIn = () => {
         FirestoreService.setCheckIn()
     }
     const onCheckOut = () => {
-        FirestoreService.setCheckOut(userCheckData?.[0])
+        FirestoreService.setCheckOut(chkData?.[0])
     }
     FirestoreService.fetchIP().then(e => setFetchIP(e))
 
+    useEffect(() => {
+        if (!localStorage.getItem('login_check')) {
+            history.push('login')
+        }
+    })
     useEffect(() => {
         FirestoreService.getCheckInUsers().orderByValue().on("value", snapshot => {
             const array = [];
@@ -30,35 +38,55 @@ export default function Home() {
             });
             setCheckUserData(array);
         });
+
+        setInterval(() => {
+            setTimeming(moment())
+        }, 1000);
     }, [])
 
-    setInterval(() => {
-        history.go()
-    }, 30000);
+    const chkData = [userCheckData.reverse().find(({ check_out }) => check_out === '') || 0]
 
     return (
         <>
             <br />
-            <Container>
-                <CheckIn CheckInData={userCheckData.reverse()} />
+            <Container maxWidth="xs">
+                {/* <CheckIn CheckInData={chkData} /> */}
+                <Grid
+                    container
+                    direction="row"
+                    justify="center"
+                    alignItems="center"
+                    spacing={3}>
+                    <Grid item xs>
+                        <Paper elevation={6}><h1 style={{ textAlign: '-webkit-center', paddingTop: '20px', paddingBottom: '20px' }}>{timeming.format('HH')}</h1></Paper>
+                    </Grid>
+                    <h1>:</h1>
+                    <Grid item xs>
+                        <Paper elevation={6}><h1 style={{ textAlign: '-webkit-center', paddingTop: '20px', paddingBottom: '20px' }}>{timeming.format('mm')}</h1></Paper>
+                    </Grid>
+                    <h1>:</h1>
+                    <Grid item xs>
+                        <Paper elevation={6}><h1 style={{ textAlign: '-webkit-center', paddingTop: '20px', paddingBottom: '20px' }}>{timeming.format('ss')}</h1></Paper>
+                    </Grid>
+                </Grid>
+    {chkData?.[0]?.check_in && !chkData?.[0]?.check_out ? <><h1 style={{marginTop: '18vh'}} align='center'>คุณเข้างานเวลา {moment(chkData?.[0]?.check_in).format('HH:mm')}</h1></> : <><h1 style={{marginTop: '18vh'}} align='center'>คุณยังไม่ได้บันทึกการเข้างาน</h1></> }
             </Container>
-
-            {!FirestoreService.IP_ADDRESS.find(({ip}) => ip === fetchIP)?.ip ? <p></p> : userCheckData?.[0]?.check_in && moment().diff(moment(userCheckData?.[0]?.check_in), 'second') < 10 ?
+            {!FirestoreService.IP_ADDRESS.find(({ ip }) => ip === fetchIP)?.ip ? <p></p> : chkData?.[0]?.check_in && moment().diff(moment(chkData?.[0]?.check_in), 'second') < 10 ?
                 <Button
                     type="button"
                     fullWidth
                     variant="contained"
-                    color="secondary"
+                    color="inherit"
                     onClick={() => history.go()}
                     style={{ bottom: 0, position: 'fixed' }}
                 >
                     Warnning
                 </Button> :
-                userCheckData?.[0]?.check_in && !userCheckData?.[0]?.check_out ? <Button
+                chkData?.[0]?.check_in && !chkData?.[0]?.check_out ? <Button
                     type="button"
                     fullWidth
                     variant="contained"
-                    color="primary"
+                    color="secondary"
                     onClick={onCheckOut}
                     style={{ bottom: 0, position: 'fixed' }}
                 >
@@ -74,7 +102,6 @@ export default function Home() {
                         Check In
                 </Button>
             }
-
         </>
     );
 }

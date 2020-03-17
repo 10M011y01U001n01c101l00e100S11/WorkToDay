@@ -7,7 +7,9 @@ try {
     ReactDOM.render(<App />, document.getElementById('root'));
 } catch (error) {
     localStorage.clear();
-    window.location.reload();
+    setTimeout(() => {
+        window.location.reload();
+    }, 2000);
 }
 
 // If you want your app to work offline and load faster, you can change

@@ -10,6 +10,8 @@ import HomeIcon from '@material-ui/icons/Home';
 import GroupAddIcon from '@material-ui/icons/GroupAdd';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import PeopleIcon from '@material-ui/icons/People';
+import HistoryIcon from '@material-ui/icons/History';
+
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
@@ -29,7 +31,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function ProminentAppBar() {
+export default function ProminentAppBar({appBar}) {
   const classes = useStyles();
   const history = useHistory();
 
@@ -54,7 +56,7 @@ export default function ProminentAppBar() {
             <MenuIcon />
           </IconButton>
           <Typography className={classes.title} variant="h5" noWrap>
-            ระบบบันทึกการเข้าออกงาน
+            {appBar}
           </Typography>
 
           <IconButton aria-label="search" color="inherit" onClick={()=>history.push('')}>
@@ -67,6 +69,10 @@ export default function ProminentAppBar() {
 
           <IconButton aria-label="search" color="inherit" onClick={()=>history.push('addusers')}>
             <GroupAddIcon />
+          </IconButton>
+
+          <IconButton aria-label="search" color="inherit" onClick={() => history.push('checkhistory')}>
+            <HistoryIcon />
           </IconButton>
 
           <IconButton aria-label="search" color="inherit" onClick={() => { localStorage.clear(); history.push('login') }}>
