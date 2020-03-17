@@ -24,28 +24,29 @@ export default function AddUsers() {
             <Container>
                 <h2>AddUsers</h2>
                 <form>
-                    <Grid container spacing={3}>
-                        <Grid item xs={2}>
+                    <Grid container lg={12} spacing={3}>
+                        <Grid item xs={12} sm={4} md={2}>
                             <TextField required defaultValue={username} label="Username" fullWidth {...bindUsername} />
                         </Grid>
-                        <Grid item xs={2}>
-                            <TextField required defaultValue={password} label="Password" type="password" {...bindPassword} />
+                        <Grid item xs={12} sm={4} md={2}>
+                            <TextField required defaultValue={password} label="Password"fullWidth type="password" {...bindPassword} />
                         </Grid>
                     </Grid>
-                    <Grid container spacing={3}>
-                        <Grid item xs={3}>
+                    <Grid container xs={12} md={12} spacing={3}>
+                        <Grid item xs={12} sm={6} md={2}>
                             <TextField required defaultValue={firstname} label="Firstname" fullWidth {...bindFirstname} />
                         </Grid>
-                        <Grid item xs={3}>
+                        <Grid item xs={12} sm={6} md={2}>
                             <TextField required defaultValue={lastname} label="Lastname" fullWidth {...bindLastname} />
                         </Grid>
-                        <Grid item xs={12}>
+                        <Grid item xs={12} md={12}>
                             <TextField required defaultValue={photo} label="Photo" placeholder="www.img.com" fullWidth {...bindPhoto} />
                         </Grid>
-                        <Grid item xs={12}>
-                        <Button type="button" fullWidth variant="contained" color="primary" onClick={addUsers}>เพิ่มข้อมูล</Button>
-                        </Grid>
                     </Grid>
+                    <br/>
+                        <Grid item lg={12}>
+                            <Button type="button" fullWidth variant="contained" color="primary" onClick={addUsers}>เพิ่มข้อมูล</Button>
+                        </Grid>
                 </form>
                 <Users />
             </Container>

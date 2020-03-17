@@ -54,17 +54,17 @@ export default function Users() {
         <Grid container spacing={3}>
           {userData?.map(({ _key, fristname, img, lastname, password, username }) => (
 
-            <Grid item xs={4} lg container>
+            <Grid item sm={6} md={4} lg={3} container>
               <Paper className={classes.paper}>
-                <Grid spacing={4}>
+                <Grid spacing={6}>
                   <Grid item>
                     <ButtonBase className={classes.image}>
                       <img className={classes.img} alt="complex" src={img} />
                     </ButtonBase>
                   </Grid>
-                  <Grid item xs={12} lg container>
-                    <Grid item xs container direction="column" spacing={3}>
-                      <Grid item xs>
+                  <Grid item sm={12} lg container>
+                    <Grid item sm container direction="column" spacing={3}>
+                      <Grid item sm>
                         <Typography gutterBottom variant="subtitle1">
                           {fristname} {lastname}
                         </Typography>
