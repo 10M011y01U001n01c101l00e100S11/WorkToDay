@@ -6,7 +6,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import MenuIcon from '@material-ui/icons/Menu';
 import { useHistory } from 'react-router-dom';
-import HomeIcon from '@material-ui/icons/Home';
+// import HomeIcon from '@material-ui/icons/Home';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 const useStyles = makeStyles(theme => ({
   root: {
@@ -55,9 +55,9 @@ export default function ProminentAppBar() {
             Check In/Out
           </Typography>
 
-          <IconButton aria-label="search" color="inherit" onClick={()=>history.push('')}>
+          {/* <IconButton aria-label="search" color="inherit" onClick={()=>history.push('')}>
             <HomeIcon />
-          </IconButton>
+          </IconButton> */}
 
           <IconButton aria-label="search" color="inherit" onClick={() => {localStorage.clear();history.push('login')}}>
             <ExitToAppIcon />

@@ -6,7 +6,6 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import MenuIcon from '@material-ui/icons/Menu';
 import { useHistory } from 'react-router-dom';
-import HomeIcon from '@material-ui/icons/Home';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 const useStyles = makeStyles(theme => ({
   root: {
@@ -51,10 +50,6 @@ export default function AddUsersAppBar() {
           <Typography className={classes.title} variant="h5" noWrap>
             Check In/Out
           </Typography>
-
-          <IconButton aria-label="search" color="inherit" onClick={()=>history.push('')}>
-            <HomeIcon />
-          </IconButton>
 
           <IconButton aria-label="search" color="inherit" onClick={() => {localStorage.clear();history.push('login')}}>
             <ExitToAppIcon />

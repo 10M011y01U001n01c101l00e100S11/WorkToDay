@@ -29,7 +29,7 @@ export default function AddUsers() {
                             <TextField required defaultValue={username} label="Username" fullWidth {...bindUsername} />
                         </Grid>
                         <Grid item xs={12} sm={4} md={2}>
-                            <TextField required defaultValue={password} label="Password"fullWidth type="password" {...bindPassword} />
+                            <TextField required defaultValue={password} label="Password" fullWidth type="password" {...bindPassword} />
                         </Grid>
                     </Grid>
                     <Grid container xs={12} md={12} spacing={3}>
@@ -43,10 +43,13 @@ export default function AddUsers() {
                             <TextField required defaultValue={photo} label="Photo" placeholder="www.img.com" fullWidth {...bindPhoto} />
                         </Grid>
                     </Grid>
-                    <br/>
-                        <Grid item lg={12}>
+                    <br />
+                    <Grid item lg={12}>
+                        {username && password && firstname && lastname ?
                             <Button type="button" fullWidth variant="contained" color="primary" onClick={addUsers}>เพิ่มข้อมูล</Button>
-                        </Grid>
+                            : <Button type="button" fullWidth variant="contained" color="secondary">เพิ่มข้อมูล</Button>
+                        }
+                    </Grid>
                 </form>
                 <Users />
             </Container>
