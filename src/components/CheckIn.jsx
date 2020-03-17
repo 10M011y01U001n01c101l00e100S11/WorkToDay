@@ -14,6 +14,7 @@ const useStyles = makeStyles(theme => ({
         width: '100%',
         maxWidth: 360,
         backgroundColor: theme.palette.background.paper,
+        paddingBottom: '50px'
     },
 }));
 
@@ -29,7 +30,7 @@ export default function CheckIn({ CheckInData }) {
                             <WorkIcon />
                         </Avatar>
                     </ListItemAvatar>
-                    <ListItemText primary={work_list} secondary={'Check In At: ' + moment(check_in).format('LL HH:mm:ss') + (check_out ? ('Check Out At: ' + moment(check_out).format('LL HH:mm:ss')) : '')} />
+                    <ListItemText style={{ minWidth: 'fit-content' }} primary={work_list} secondary={<>Check In At: {moment(check_in).format('LL HH:mm:ss')}<br />Check Out At: {moment(check_out).format('LL HH:mm:ss').replace('Invalid date', '-')}</>} />
                 </ListItem>
             ))}
         </List>

@@ -12,7 +12,7 @@ export default function Home() {
     FirestoreService.fetchIP().then(e => console.log(e))
 
     useEffect(() => {
-        FirestoreService.getCheckInUsers().on("value", snapshot => {
+        FirestoreService.getCheckInUsers().orderByKey().on("value", snapshot => {
             const array = [];
             // For each data in the entry
             snapshot.forEach(el => {
@@ -29,8 +29,8 @@ export default function Home() {
 
     return (
         <>
+        <br/>
             <Container>
-
                 <CheckIn CheckInData={userCheckData} />
             </Container>
             <Button
