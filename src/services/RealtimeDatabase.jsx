@@ -63,7 +63,8 @@ export const addUsers = (username = '', password = '', lastname = '', img = '', 
         "img": img || 'https://f0.pngfuel.com/png/980/886/male-portrait-avatar-png-clip-art.png',
         "lastname": lastname,
         "password": password,
-        "username": username
+        "username": username,
+        "role": "user"
     }
     updates[`/tb_user/` + newKey] = list;
     return db.ref().update(updates)

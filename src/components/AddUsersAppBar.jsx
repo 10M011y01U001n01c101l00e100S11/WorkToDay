@@ -48,7 +48,7 @@ export default function AddUsersAppBar() {
             <MenuIcon />
           </IconButton>
           <Typography className={classes.title} variant="h5" noWrap>
-            Check In/Out
+            ระบบเพิ่มข้อมูลผู้ใช้งาน
           </Typography>
 
           <IconButton aria-label="search" color="inherit" onClick={() => {localStorage.clear();history.push('login')}}>

@@ -6,8 +6,10 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import MenuIcon from '@material-ui/icons/Menu';
 import { useHistory } from 'react-router-dom';
-// import HomeIcon from '@material-ui/icons/Home';
+import HomeIcon from '@material-ui/icons/Home';
+import GroupAddIcon from '@material-ui/icons/GroupAdd';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import PeopleIcon from '@material-ui/icons/People';
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
@@ -52,14 +54,22 @@ export default function ProminentAppBar() {
             <MenuIcon />
           </IconButton>
           <Typography className={classes.title} variant="h5" noWrap>
-            Check In/Out
+            ระบบบันทึกการเข้าออกงาน
           </Typography>
 
-          {/* <IconButton aria-label="search" color="inherit" onClick={()=>history.push('')}>
+          <IconButton aria-label="search" color="inherit" onClick={()=>history.push('')}>
             <HomeIcon />
-          </IconButton> */}
+          </IconButton>
 
-          <IconButton aria-label="search" color="inherit" onClick={() => {localStorage.clear();history.push('login')}}>
+          <IconButton aria-label="search" color="inherit" onClick={()=>history.push('users')}>
+            <PeopleIcon />
+          </IconButton>
+
+          <IconButton aria-label="search" color="inherit" onClick={()=>history.push('addusers')}>
+            <GroupAddIcon />
+          </IconButton>
+
+          <IconButton aria-label="search" color="inherit" onClick={() => { localStorage.clear(); history.push('login') }}>
             <ExitToAppIcon />
           </IconButton>
 

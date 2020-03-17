@@ -10,12 +10,28 @@ import Login from "./components/Login";
 import AddUsers from "./components/AddUsers";
 import ProminentAppBar from "./components/ProminentAppBar";
 import AddUsersAppBar from "./components/AddUsersAppBar";
+import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
+
+const theme = createMuiTheme({
+
+  palette: {
+    primary: {
+      main: '#1976d2',
+    },
+    contrastThreshold: 3,
+    tonalOffset: 0.2,
+  },
+  typography: {
+    fontFamily: "Prompt"
+  }
+});
 
 export default function App() {
 
   return (
     <Router>
-      <div>
+      <ThemeProvider theme={theme}>
+
         {/* A <Switch> looks through its children <Route>s and
             renders the first one that matches the current URL. */}
         <Switch>
@@ -23,19 +39,19 @@ export default function App() {
             <Login />
           </Route>
           <Route path="/users">
-            <AddUsersAppBar />
+            {localStorage.getItem('login_role') === 'admin' ? <ProminentAppBar /> : <AddUsersAppBar />}
             <Users />
           </Route>
           <Route path="/addusers">
-            <AddUsersAppBar />
+            {localStorage.getItem('login_role') === 'admin' ? <ProminentAppBar /> : <AddUsersAppBar />}
             <AddUsers />
           </Route>
           <Route path="/">
-            <ProminentAppBar />
+            {localStorage.getItem('login_role') === 'admin' ? <ProminentAppBar /> : <AddUsersAppBar />}
             <Home />
           </Route>
         </Switch>
-      </div>
+      </ThemeProvider>
     </Router>
   );
 }

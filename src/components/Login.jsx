@@ -76,9 +76,11 @@ export default function Login() {
                 await localStorage.setItem('login_check', true)
                 await localStorage.setItem('login_data', JSON.stringify(data.val()))
                 await localStorage.setItem('login__key', data.val()._key)
+                await localStorage.setItem('login_role', data.val().role)
                 await localStorage.setItem('login_username', username)
                 await localStorage.setItem('login_password', password)
                 await history.push('home')
+                await history.go(0)
             } else {
                 alert('Error')
             }

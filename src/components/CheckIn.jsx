@@ -8,6 +8,7 @@ import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Avatar from '@material-ui/core/Avatar';
 import WorkIcon from '@material-ui/icons/Work';
 import moment from "moment";
+import "moment/locale/th"
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -20,6 +21,7 @@ const useStyles = makeStyles(theme => ({
 export default function CheckIn({ CheckInData }) {
     const classes = useStyles();
     document.title = 'Work To Day | Users';
+    
     return (
         <List className={classes.root}>
             {CheckInData?.map(({ _key, check_in, check_out, check_user, work_list }) => (
@@ -29,9 +31,8 @@ export default function CheckIn({ CheckInData }) {
                             <WorkIcon />
                         </Avatar>
                     </ListItemAvatar>
-                    <ListItemText style={{ minWidth: 'fit-content' }} primary={"Time's " + moment(check_in).toNow()} secondary={<>Check In At: {moment(check_in).format('LL HH:mm:ss')}<br />
-                    Check Out At: {moment(check_out).format('LL HH:mm:ss').replace('Invalid date', '-')}<br/>
-                    Time's {moment(check_out).diff(moment(check_in), 'hour') || '00'}:{moment(check_out).diff(moment(check_in), 'minute') || '00'}:{moment(check_out).diff(moment(check_in), 'second') || '00'}
+            <ListItemText style={{ minWidth: 'fit-content' }} primary={moment(check_out).format('LL HH:mm:ss') === 'Invalid date' ? <>เข้างานเมื่อ  {moment(check_in).startOf('hour').fromNow()}</> : <>เวลาทำงาน {moment(check_out).diff(moment(check_in), 'hour') || '0'} ชั่วโมง</>} secondary={<>วันเวลาที่เข้างาน: {moment(check_in).format('LL HH:mm:ss')}<br />
+                    วันเวลาที่เลิกงาน: {moment(check_out).format('LL HH:mm:ss').replace('Invalid date', 'ยังไม่ถูกบันทึก')}<br/>
                     </>} />
                 </ListItem>
             ))}
