@@ -8,6 +8,7 @@ import { useHistory } from "react-router-dom";
 export default function Home() {
     document.title = 'Work To Day';
     const [userCheckData, setCheckUserData] = useState([])
+    const [fetchIP, setFetchIP] = useState([])
     const history = useHistory();
     const onCheckIn = () => {
         FirestoreService.setCheckIn()
@@ -15,7 +16,7 @@ export default function Home() {
     const onCheckOut = () => {
         FirestoreService.setCheckOut(userCheckData?.[0])
     }
-    FirestoreService.fetchIP().then(e => console.log(e))
+    FirestoreService.fetchIP().then(e => setFetchIP(e))
 
     useEffect(() => {
         FirestoreService.getCheckInUsers().orderByValue().on("value", snapshot => {
@@ -31,7 +32,9 @@ export default function Home() {
         });
     }, [])
 
-
+    setInterval(() => {
+        history.go()
+    }, 30000);
 
     return (
         <>
@@ -39,7 +42,8 @@ export default function Home() {
             <Container>
                 <CheckIn CheckInData={userCheckData.reverse()} />
             </Container>
-            {userCheckData?.[0]?.check_in && moment().diff(moment(userCheckData?.[0]?.check_in), 'second') < 10 ?
+
+            {!FirestoreService.IP_ADDRESS.find(({ip}) => ip === fetchIP)?.ip ? <p></p> : userCheckData?.[0]?.check_in && moment().diff(moment(userCheckData?.[0]?.check_in), 'second') < 10 ?
                 <Button
                     type="button"
                     fullWidth

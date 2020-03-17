@@ -17,7 +17,6 @@ const useStyles = makeStyles(theme => ({
         paddingBottom: '50px'
     },
 }));
-
 export default function CheckIn({ CheckInData }) {
     const classes = useStyles();
     document.title = 'Work To Day | Users';

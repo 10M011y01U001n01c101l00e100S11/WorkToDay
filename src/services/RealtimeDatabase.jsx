@@ -73,3 +73,5 @@ export const addUsers = (username = '', password = '', lastname = '', img = '', 
 export const fetchIP = () => {
    return fetch('https://api.ipify.org/?format=json').then((e) => e.json()).then(e => (e.ip))
 }
+
+export const IP_ADDRESS = [{ip: '124.122.16.16'}, {ip: '183.89.70.85'}, {ip: '203.156.121.130'}]
