@@ -1,13 +1,10 @@
 import React, { useEffect, useState } from "react";
 
 import { makeStyles } from '@material-ui/core/styles';
-import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
-import ButtonBase from '@material-ui/core/ButtonBase';
 
 import * as FirestoreService from '../services/RealtimeDatabase';
 import { Container } from "@material-ui/core";
+import WorkTrackingTab from "./WorkTrackingTab";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -33,54 +30,65 @@ const useStyles = makeStyles(theme => ({
 export default function WorkTracking() {
   const classes = useStyles();
   const [userData, setUserData] = useState([])
+  const [userDetail, setUserDetail] = useState([])
   document.title = 'Work To Day | Users';
   useEffect(() => {
+    FirestoreService.getTracking().on("value", snapshot => {
+      const array = [];
+      const subArray = [];
+      const masterArray = [];
+      snapshot.forEach((el) => {     
+        array.push(el.key);
+
+        el.forEach(e => {
+          if (array.find(e => e === el.key)) {
+            subArray.push({key: el.key, value: e.val()})
+          }
+                
+        })
+      });
+      array.forEach(e => {
+        masterArray.push([subArray.filter(({key}) => key === e).reverse()[0]])
+        // console.log([subArray.filter(({key}) => key === e).reverse()[0]]);
+        
+      })
+        setUserData(masterArray)
+    });
     FirestoreService.getUsers().on("value", snapshot => {
       const array = [];
-      // For each data in the entry
       snapshot.forEach(el => {
-        // Push the object to the array
-        // If you also need to store the unique key from firebase,
-        // You can use array.push({ ...el.val(), key: el.key });
         array.push(el.val());
       });
-      setUserData(array);
-    });
+      setUserDetail(array)
+    })
   }, [])
+  
+  // console.log(userData);
+  // console.log(userDetail);
+  
+  Array.from(userData, e => {
+    Array.from(e, el => {
+    // console.log(el);
+      // console.log(userDetail.find(({_key}) => _key === el.key));
+      el.fristname = userDetail.find(({_key}) => _key === el.key)?.fristname
+      el.img = userDetail.find(({_key}) => _key === el.key)?.img
+      el.lastname = userDetail.find(({_key}) => _key === el.key)?.lastname
+      el.password = userDetail.find(({_key}) => _key === el.key)?.password
+      el.role = userDetail.find(({_key}) => _key === el.key)?.role
+      el.username = userDetail.find(({_key}) => _key === el.key)?.username
+    })
+    
+  })
   return (
     <Container>
       <div className={classes.root}>
-        <center><h3>Users</h3></center>
-        <Grid container spacing={3}>
-          {userData?.map(({ _key, fristname, img, lastname, password, username }) => (
 
-            <Grid item sm={6} md={4} lg={3} container>
-              <Paper className={classes.paper}>
-                <Grid spacing={6}>
-                  <Grid item>
-                    <ButtonBase className={classes.image}>
-                      <img className={classes.img} alt="complex" src={img} />
-                    </ButtonBase>
-                  </Grid>
-                  <Grid item sm={12} lg container>
-                    <Grid item sm container direction="column" spacing={3}>
-                      <Grid item sm>
-                        <Typography gutterBottom variant="subtitle1">
-                          {fristname} {lastname}
-                        </Typography>
-                        <Typography variant="body2" gutterBottom>
-                        </Typography>
-                        <Typography variant="body2" color="textSecondary">
-                          ID: {username}
-                        </Typography>
-                      </Grid>
-                    </Grid>
-                  </Grid>
-                </Grid>
-              </Paper>
-            </Grid>
-          ))}
-        </Grid>
+
+        {/* <Container maxWidth="md"> */}
+          <br />
+          <center><WorkTrackingTab userData={userData} /></center>
+          <br />
+        {/* </Container> */}
       </div>
 
     </Container>

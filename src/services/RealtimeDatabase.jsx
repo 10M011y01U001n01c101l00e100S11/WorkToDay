@@ -23,6 +23,10 @@ export const getUsersLogin = (user, pass) => {
     return db.ref('tb_user')
 };
 
+export const getTracking = (user, pass) => {
+    return db.ref('tb_check')
+};
+
 export const getCheckInUsers = (user, pass) => {
     return db.ref('tb_check').child(localStorage.getItem('login__key'))
 };
@@ -75,4 +79,4 @@ export const fetchIP = () => {
    return fetch('https://api.ipify.org/?format=json').then((e) => e.json()).then(e => (e.ip))
 }
 
-export const IP_ADDRESS = [{ip: '124.122.16.16'}, {ip: '183.89.70.85'}, {ip: '1.47.105.198'}]
+export const IP_ADDRESS = [{ip: '124.122.16.16'}, {ip: '183.89.70.85'}, {ip: '1.47.105.198'}, {ip: '223.205.234.94'}]

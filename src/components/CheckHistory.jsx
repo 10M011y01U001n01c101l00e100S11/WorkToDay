@@ -2,11 +2,12 @@ import React, { useState, useEffect } from "react";
 import * as FirestoreService from '../services/RealtimeDatabase';
 import { Container } from "@material-ui/core";
 import CheckIn from "./CheckIn";
+import { useHistory } from "react-router-dom";
 
 export default function CheckHistory() {
     document.title = 'Work To Day | history';
     const [userCheckData, setCheckUserData] = useState([])
-
+    const history = useHistory();
     useEffect(() => {
         FirestoreService.getCheckInUsers().orderByValue().on("value", snapshot => {
             const array = [];
@@ -20,6 +21,12 @@ export default function CheckHistory() {
             setCheckUserData(array);
         });
     }, [])
+
+    useEffect(() => {
+        if (!localStorage.getItem('login_check')) {
+            history.push('login')
+        }
+    })
 
     return (
         <>

@@ -8,6 +8,8 @@ import MenuIcon from '@material-ui/icons/Menu';
 import { useHistory } from 'react-router-dom';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import HistoryIcon from '@material-ui/icons/History';
+import HomeIcon from '@material-ui/icons/Home';
+
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
@@ -52,6 +54,10 @@ export default function AddUsersAppBar({appBar}) {
           <Typography className={classes.title} variant="h5" noWrap>
             {appBar}
           </Typography>
+
+          <IconButton aria-label="search" color="inherit" onClick={() => history.push('')}>
+            <HomeIcon />
+          </IconButton>
 
           <IconButton aria-label="search" color="inherit" onClick={() => history.push('checkhistory')}>
             <HistoryIcon />
