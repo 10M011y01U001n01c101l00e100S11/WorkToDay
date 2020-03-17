@@ -69,7 +69,7 @@ export default function Home() {
                         <Paper elevation={6}><h1 style={{ textAlign: '-webkit-center', paddingTop: '20px', paddingBottom: '20px' }}>{timeming.format('ss')}</h1></Paper>
                     </Grid>
                 </Grid>
-    {chkData?.[0]?.check_in && !chkData?.[0]?.check_out ? <><h2 style={{marginTop: '18vh'}} align='center'>คุณเข้างานเวลา {moment(chkData?.[0]?.check_in).format('HH:mm')}</h2></> : <><h1 style={{marginTop: '18vh'}} align='center'>คุณยังไม่ได้บันทึกการเข้างาน</h1></> }
+    {chkData?.[0]?.check_in && !chkData?.[0]?.check_out ? <><h2 style={{marginTop: '18vh'}} align='center'>คุณเข้างานเวลา {moment(chkData?.[0]?.check_in).format('HH:mm')}</h2></> : <><h2 style={{marginTop: '18vh'}} align='center'>คุณยังไม่ได้บันทึกการเข้างาน</h2></> }
             </Container>
             {!FirestoreService.IP_ADDRESS.find(({ ip }) => ip === fetchIP)?.ip ? <p></p> : chkData?.[0]?.check_in && moment().diff(moment(chkData?.[0]?.check_in), 'second') < 10 ?
                 <Button
