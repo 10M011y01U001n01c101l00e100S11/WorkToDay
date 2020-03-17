@@ -9,6 +9,7 @@ import Users from "./components/Users";
 import Login from "./components/Login";
 import AddUsers from "./components/AddUsers";
 import ProminentAppBar from "./components/ProminentAppBar";
+import AddUsersAppBar from "./components/AddUsersAppBar";
 
 export default function App() {
 
@@ -22,11 +23,11 @@ export default function App() {
             <Login />
           </Route>
           <Route path="/users">
-            <ProminentAppBar />
+            <AddUsersAppBar />
             <Users />
           </Route>
           <Route path="/addusers">
-            <ProminentAppBar />
+            <AddUsersAppBar />
             <AddUsers />
           </Route>
           <Route path="/">
