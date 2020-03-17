@@ -8,7 +8,6 @@ import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Avatar from '@material-ui/core/Avatar';
 import WorkIcon from '@material-ui/icons/Work';
 import moment from "moment";
-import { ListItemSecondaryAction, IconButton } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -30,7 +29,7 @@ export default function CheckIn({ CheckInData }) {
                             <WorkIcon />
                         </Avatar>
                     </ListItemAvatar>
-                    <ListItemText primary={work_list} secondary={'Check In: ' + moment(check_in).format('LL HH:mm:ss')} />
+                    <ListItemText primary={work_list} secondary={'Check In At: ' + moment(check_in).format('LL HH:mm:ss') + (check_out ? ('Check Out At: ' + moment(check_out).format('LL HH:mm:ss')) : '')} />
                 </ListItem>
             ))}
         </List>

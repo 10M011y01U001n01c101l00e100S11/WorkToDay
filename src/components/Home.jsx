@@ -26,19 +26,23 @@ export default function Home() {
     }, [])
 
     console.log(userCheckData);
-    
+
     return (
-        <Container>
+        <>
+            <Container>
+
+                <CheckIn CheckInData={userCheckData} />
+            </Container>
             <Button
                 type="button"
                 fullWidth
                 variant="contained"
                 color="primary"
                 onClick={onCheckIn}
+                style={{bottom: 0, position: 'fixed'}}
             >
                 Check In
             </Button>
-            <CheckIn CheckInData={userCheckData} />
-        </Container>
+        </>
     );
 }
