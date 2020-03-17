@@ -23,7 +23,7 @@ export default function CheckIn({ CheckInData }) {
     document.title = 'Work To Day | Users';
     return (
         <List className={classes.root}>
-            {CheckInData?.reverse().map(({ _key, check_in, check_out, check_user, work_list }) => (
+            {CheckInData?.map(({ _key, check_in, check_out, check_user, work_list }) => (
                 <ListItem>
                     <ListItemAvatar>
                         <Avatar>

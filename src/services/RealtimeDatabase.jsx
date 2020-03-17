@@ -41,6 +41,19 @@ export const setCheckIn = (user = localStorage.getItem('login_username'), pass =
     return db.ref().update(updates)
 };
 
+export const setCheckOut = (e) => {    
+    let updates = {};
+    const list = {
+        "_key": e._key,
+        "check_in": e.check_in,
+        "check_out": moment().format(),
+        "check_user": e.check_user,
+        "work_list": e.work_list
+    }
+    updates[`/tb_check/${localStorage.getItem('login__key')}/` + e._key ] = list;
+    return db.ref().update(updates)
+};
+
 export const addUsers = (username = '', password = '', lastname = '', img = '', fristname = '') => {
     let newKey = db.ref().child(`tb_user`).push().key;
     let updates = {};

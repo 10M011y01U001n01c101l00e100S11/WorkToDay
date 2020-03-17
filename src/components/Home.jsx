@@ -9,10 +9,13 @@ export default function Home() {
     const onCheckIn = () => {
         FirestoreService.setCheckIn()
     }
+    const onCheckOut = () => {
+        FirestoreService.setCheckOut(userCheckData?.[0])
+    }
     FirestoreService.fetchIP().then(e => console.log(e))
 
     useEffect(() => {
-        FirestoreService.getCheckInUsers().orderByKey().on("value", snapshot => {
+        FirestoreService.getCheckInUsers().orderByValue().on("value", snapshot => {
             const array = [];
             // For each data in the entry
             snapshot.forEach(el => {
@@ -25,15 +28,24 @@ export default function Home() {
         });
     }, [])
 
-    console.log(userCheckData);
+    console.log(userCheckData?.[0]?.check_out);
 
     return (
         <>
         <br/>
             <Container>
-                <CheckIn CheckInData={userCheckData} />
+                <CheckIn CheckInData={userCheckData.reverse()} />
             </Container>
-            <Button
+            {userCheckData?.[0]?.check_in && !userCheckData?.[0]?.check_out ? <Button
+                type="button"
+                fullWidth
+                variant="contained"
+                color="primary"
+                onClick={onCheckOut}
+                style={{bottom: 0, position: 'fixed'}}
+            >
+                Check Out
+            </Button> : <Button
                 type="button"
                 fullWidth
                 variant="contained"
@@ -42,7 +54,7 @@ export default function Home() {
                 style={{bottom: 0, position: 'fixed'}}
             >
                 Check In
-            </Button>
+            </Button>}
         </>
     );
 }
