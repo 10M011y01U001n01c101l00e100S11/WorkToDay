@@ -32,17 +32,18 @@ export const getCheckInUsers = (user, pass) => {
 };
 
 export const setCheckIn = (user = localStorage.getItem('login_username'), pass = localStorage.getItem('login_password')) => {
-    let newKey = db.ref().child(`tb_check/${localStorage.getItem('login__key')}`).push().key;
-    let updates = {};
-    const list = {
-        "_key": newKey,
-        "check_in": moment().format(),
-        "check_out": "",
-        "check_user": user,
-        "work_list": moment().format('HH') >= 6 && moment().format('HH') <= 18 ? "Morning job" : "Late night"
-    }
-    updates[`/tb_check/${localStorage.getItem('login__key')}/` + newKey] = list;
-    return db.ref().update(updates)
+        let newKey = db.ref().child(`tb_check/${localStorage.getItem('login__key')}`).push().key;
+        let updates = {};
+        const list = {
+            "_key": newKey,
+            "check_in": moment().format(),
+            "check_out": "",
+            "check_user": user,
+            "work_list": moment().format('HH') >= 6 && moment().format('HH') <= 18 ? "Morning job" : "Late night",
+            "MAC_ADDRESS": 'mac'
+        }
+        updates[`/tb_check/${localStorage.getItem('login__key')}/` + newKey] = list;        
+        return db.ref().update(updates)
 };
 
 export const setCheckOut = (e) => {    
@@ -79,4 +80,6 @@ export const fetchIP = () => {
    return fetch('https://api.ipify.org/?format=json').then((e) => e.json()).then(e => (e.ip))
 }
 
-export const IP_ADDRESS = [{ip: '124.122.16.16'}, {ip: '183.89.70.85'}, {ip: '1.47.105.198'}, {ip: '223.205.234.94'}]
+export const IP_ADDRESS = () => {
+    return db.ref('tb_ip')
+};

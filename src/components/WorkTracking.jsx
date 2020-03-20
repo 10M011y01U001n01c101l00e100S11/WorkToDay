@@ -66,19 +66,19 @@ export default function WorkTracking() {
   // console.log(userData);
   // console.log(userDetail);
   
-  Array.from(userData, e => {
-    Array.from(e, el => {
-    // console.log(el);
-      // console.log(userDetail.find(({_key}) => _key === el.key));
-      el.fristname = userDetail.find(({_key}) => _key === el.key)?.fristname
-      el.img = userDetail.find(({_key}) => _key === el.key)?.img
-      el.lastname = userDetail.find(({_key}) => _key === el.key)?.lastname
-      el.password = userDetail.find(({_key}) => _key === el.key)?.password
-      el.role = userDetail.find(({_key}) => _key === el.key)?.role
-      el.username = userDetail.find(({_key}) => _key === el.key)?.username
+    // eslint-disable-next-line
+    Array.from(userData, e => {
+      // eslint-disable-next-line
+      Array.from(e, el => {
+        el.fristname = userDetail.find(({_key}) => _key === el.key)?.fristname
+        el.img = userDetail.find(({_key}) => _key === el.key)?.img
+        el.lastname = userDetail.find(({_key}) => _key === el.key)?.lastname
+        el.password = userDetail.find(({_key}) => _key === el.key)?.password
+        el.role = userDetail.find(({_key}) => _key === el.key)?.role
+        el.username = userDetail.find(({_key}) => _key === el.key)?.username
+      })
     })
-    
-  })
+
   return (
     <Container>
       <div className={classes.root}>

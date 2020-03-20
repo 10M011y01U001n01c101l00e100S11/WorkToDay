@@ -10,6 +10,7 @@ export default function Home() {
     document.title = 'Work To Day';
     const [userCheckData, setCheckUserData] = useState([])
     const [fetchIP, setFetchIP] = useState([])
+    const [fetchIPAddress, setFetchIPAddress] = useState([{id: ''}])
     const [timeming, setTimeming] = useState(moment())
     const history = useHistory();
 
@@ -27,6 +28,14 @@ export default function Home() {
         }
     })
     useEffect(() => {
+
+        FirestoreService.IP_ADDRESS().on("value", snapshot => {
+            const array = [];
+            snapshot.forEach(el => {
+                array.push(el.val());
+            });
+            setFetchIPAddress(array);
+        });
         FirestoreService.getCheckInUsers().orderByValue().on("value", snapshot => {
             const array = [];
             // For each data in the entry
@@ -45,6 +54,7 @@ export default function Home() {
     }, [])
 
     const chkData = [userCheckData.reverse().find(({ check_out }) => check_out === '') || 0]
+
 
     return (
         <>
@@ -71,7 +81,7 @@ export default function Home() {
                 </Grid>
                 {chkData?.[0]?.check_in && !chkData?.[0]?.check_out ? <><h2 style={{ marginTop: '18vh' }} align='center'>คุณเข้างานเวลา {moment(chkData?.[0]?.check_in).format('HH:mm')} นาที</h2></> : <><h2 style={{ marginTop: '18vh' }} align='center'>คุณยังไม่ได้บันทึกการเข้างาน</h2></>}
             </Container>
-            {!FirestoreService.IP_ADDRESS.find(({ ip }) => ip === fetchIP)?.ip ? <p></p> : chkData?.[0]?.check_in && moment().diff(moment(chkData?.[0]?.check_in), 'second') < 10 ?
+            {!fetchIPAddress.find(({ ip }) => ip === fetchIP)?.ip ? <p></p> : chkData?.[0]?.check_in && moment().diff(moment(chkData?.[0]?.check_in), 'second') < 10 ?
                 <Button
                     type="button"
                     fullWidth
