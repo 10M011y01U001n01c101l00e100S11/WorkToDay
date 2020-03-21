@@ -10,17 +10,19 @@ export default function Home() {
     document.title = 'Work To Day';
     const [userCheckData, setCheckUserData] = useState([])
     const [fetchIP, setFetchIP] = useState([])
-    const [fetchIPAddress, setFetchIPAddress] = useState([{id: ''}])
+    const [fetchIPAddress, setFetchIPAddress] = useState([{ id: '' }])
+    const [fetchMACAddress, setFetchMACAddress] = useState()
     const [timeming, setTimeming] = useState(moment())
     const history = useHistory();
 
     const onCheckIn = () => {
-        FirestoreService.setCheckIn()
+        FirestoreService.setCheckIn(fetchIP, fetchMACAddress, )
     }
     const onCheckOut = () => {
         FirestoreService.setCheckOut(chkData?.[0])
     }
     FirestoreService.fetchIP().then(e => setFetchIP(e))
+    FirestoreService.fetchMacAddress().then(e => setFetchMACAddress(e))
 
     useEffect(() => {
         if (!localStorage.getItem('login_check')) {

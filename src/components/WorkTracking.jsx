@@ -70,7 +70,7 @@ export default function WorkTracking() {
     Array.from(userData, e => {
       // eslint-disable-next-line
       Array.from(e, el => {
-        el.fristname = userDetail.find(({_key}) => _key === el.key)?.fristname
+        el.firstname = userDetail.find(({_key}) => _key === el.key)?.firstname
         el.img = userDetail.find(({_key}) => _key === el.key)?.img
         el.lastname = userDetail.find(({_key}) => _key === el.key)?.lastname
         el.password = userDetail.find(({_key}) => _key === el.key)?.password

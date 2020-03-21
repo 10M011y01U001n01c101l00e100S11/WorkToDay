@@ -52,7 +52,7 @@ export default function Users() {
       <div className={classes.root}>
         <center><h3>Users</h3></center>
         <Grid container spacing={3}>
-          {userData?.map(({ _key, fristname, img, lastname, password, username }) => (
+          {userData?.map(({ _key, firstname, img, lastname, password, username }) => (
 
             <Grid item sm={6} md={4} lg={3} container>
               <Paper className={classes.paper}>
@@ -66,7 +66,7 @@ export default function Users() {
                     <Grid item sm container direction="column" spacing={3}>
                       <Grid item sm>
                         <Typography gutterBottom variant="subtitle1">
-                          {fristname} {lastname}
+                          {firstname} {lastname}
                         </Typography>
                         <Typography variant="body2" gutterBottom>
                         </Typography>

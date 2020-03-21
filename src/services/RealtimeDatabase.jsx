@@ -31,23 +31,37 @@ export const getCheckInUsers = (user, pass) => {
     return db.ref('tb_check').child(localStorage.getItem('login__key'))
 };
 
-export const setCheckIn = async (user = localStorage.getItem('login_username'), pass = localStorage.getItem('login_password')) => {
-    let newKey = await db.ref().child(`tb_check/${localStorage.getItem('login__key')}`).push().key;
-    let updates = await {};
-    let mac_address = await '';
-    let ip_address = await '';
-    await fetchMacAddress().then(async e => mac_address = await e)
-    await fetchIP().then(async e => ip_address = await e)
-    const list = await {
+export const setCheckIn = (fetchIP, fetchMACAddress, user = localStorage.getItem('login_username'), pass = localStorage.getItem('login_password')) => {
+    let newKey = db.ref().child(`tb_check/${localStorage.getItem('login__key')}`).push().key;
+    let updates = {};
+    let mac_address = fetchMACAddress;
+    let chkin = moment(moment().format()).add(12, 'hours').format('HH:mm')
+    let chklate = moment('23:30', 'HH:mm').add(12, 'hours').format('HH:mm')
+    let datechkin = moment(chkin, 'HH:mm')
+    let datechklate = moment(chklate, 'HH:mm')
+    let newdate = moment(datechkin).diff(datechklate, 'minutes')
+    let mewtime = newdate >= 60 ? (+(newdate/60).toFixed(2)).toString().replace('.', ' ชั่วโมง ') : newdate
+    const list = {
         "_key": newKey,
         "check_in": moment().format(),
+        "check_night_late": newdate,
         "check_out": "",
         "check_user": user,
         "work_list": moment().format('HH') >= 6 && moment().format('HH') <= 18 ? "Morning job" : "Late night",
-        "MAC_ADDRESS": mac_address || '0',
-        "IP_ADDRESS": ip_address || '0',
+        "MAC_ADDRESS": mac_address || '',
+        "IP_ADDRESS": fetchIP || '',
     }
-    updates[`/tb_check/${localStorage.getItem('login__key')}/` + newKey] = await list;
+    sendLineNotify(
+       moment(list.check_in).format(' LL ')
+        + (localStorage.getItem('login_firstname') + ' ' + localStorage.getItem('login_lastname'))
+        + (list.work_list === "Morning job" ? moment(moment(list.check_in).add(0, 'hours')).diff(moment('11.30', 'HH:mm').add(0, 'hours'), 'minutes') > 0 ? ' กะเช้า สาย ' : ' กะเช้า ตรงเวลา ' : newdate > 0 ? ' เข้างานกะดึก สาย ' + mewtime + ' นาที' : ' เข้างานกะดึก ตรงเวลา ')
+        )
+        
+
+        
+        
+        
+    updates[`/tb_check/${localStorage.getItem('login__key')}/` + newKey] = list;
     return db.ref().update(updates)
 };
 
@@ -64,12 +78,12 @@ export const setCheckOut = (e) => {
     return db.ref().update(updates)
 };
 
-export const addUsers = (username = '', password = '', lastname = '', img = '', fristname = '') => {
+export const addUsers = (username = '', password = '', lastname = '', img = '', firstname = '') => {
     let newKey = db.ref().child(`tb_user`).push().key;
     let updates = {};
     const list = {
         "_key": newKey,
-        "fristname": fristname,
+        "firstname": firstname,
         "img": img || 'https://f0.pngfuel.com/png/980/886/male-portrait-avatar-png-clip-art.png',
         "lastname": lastname,
         "password": password,
@@ -94,6 +108,12 @@ export const fetchMacAddress = () => {
         .then(response => response.text())
         .then(result => result)
         .catch(error => error);
+}
+
+export const sendLineNotify = (list) => {
+    // eslint-disable-next-line
+    fetch("https://work-at-home.herokuapp.com/linenoti?message=" + list)
+        .then(response => response.text())
 }
 
 export const IP_ADDRESS = () => {

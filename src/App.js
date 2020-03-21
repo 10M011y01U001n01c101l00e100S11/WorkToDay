@@ -45,7 +45,6 @@ export default function App() {
             <Users />
           </Route>
           <Route path="/addusers">
-            {localStorage.getItem('login_role') === 'admin' ? <ProminentAppBar appBar={'ระบบเพิ่มข้อมูลผู้ใช้งาน'} /> : <AddUsersAppBar appBar={'ระบบเพิ่มข้อมูลผู้ใช้งาน'} />}
             <AddUsers />
           </Route>
 

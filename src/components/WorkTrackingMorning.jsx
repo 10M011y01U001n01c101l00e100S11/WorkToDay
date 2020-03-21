@@ -37,9 +37,9 @@ export default function WorkTrackingMorning({ userData }) {
         <TableBody>
           {userData.map(row => (
             row.map((e, i) => (
-              e?.value?.work_list === "Morning job" ? <TableRow key={e.i}>
+              e?.value?.work_list === "Morning job" ? <TableRow key={e.i} style={{backgroundColor: moment(moment(e?.value?.check_in).add(0, 'hours')).diff(moment('11.30', 'HH:mm').add(0, 'hours'), 'minutes') > 0 ? '#FFC107' : i%2 === 1 ? '#FFF' : '#eee'}}>
                 <TableCell component="th" scope="row">
-                  {e.fristname}  {e.lastname}
+                  {e.firstname}  {e.lastname}
                 </TableCell>
                 <TableCell align="right">{e.role}</TableCell>
                 <TableCell align="right">{moment(e?.value?.check_in).format('L HH:mm')}</TableCell>

@@ -15,6 +15,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import * as FirestoreService from '../services/RealtimeDatabase';
 import { useInput } from "../hooks/input-hook";
 import { useHistory } from 'react-router-dom';
+import Swal from 'sweetalert2';
 
 
 function Copyright() {
@@ -49,9 +50,9 @@ const useStyles = makeStyles(theme => ({
         alignItems: 'center',
     },
     avatar: {
-      margin: theme.spacing(1),
-      width: "300px",
-      height: "300px"
+        margin: theme.spacing(1),
+        width: "300px",
+        height: "300px"
     },
     form: {
         width: '100%', // Fix IE 11 issue.
@@ -64,26 +65,31 @@ const useStyles = makeStyles(theme => ({
 
 export default function Login() {
     const classes = useStyles();
-    const { value: username, bind: bindUsername, reset: resetUsername } = useInput('');
-    const { value: password, bind: bindPassword, reset: resetPassword } = useInput('');
+    const { value: username, bind: bindUsername } = useInput('');
+    const { value: password, bind: bindPassword } = useInput('');
 
     const history = useHistory();
     const onSubmitLogin = () => FirestoreService.getUsersLogin().on('child_added', async function (data) {
-        if (username === data.val().username && password === data.val().password) {
-            resetUsername()
-            resetPassword()
-            if (data) {
+        if (data) {
+            if (username === data.val().username && password === data.val().password) {
                 await localStorage.setItem('login_check', true)
                 await localStorage.setItem('login_data', JSON.stringify(data.val()))
                 await localStorage.setItem('login__key', data.val()._key)
                 await localStorage.setItem('login_role', data.val().role)
+                await localStorage.setItem('login_firstname', data.val().firstname)
+                await localStorage.setItem('login_lastname', data.val().lastname)
+                await localStorage.setItem('login_img', data.val().img)
                 await localStorage.setItem('login_username', username)
                 await localStorage.setItem('login_password', password)
                 await history.push('home')
                 await history.go(0)
-            } else {
-                alert('Error')
             }
+        } else {
+            Swal.fire(
+                'Login false!',
+                'users หรือ password',
+                'warning'
+            ).then(() => history.go())
         }
     });
 

@@ -31,11 +31,11 @@ export default function WorkTrackingNight({userData}) {
           </TableRow>
         </TableHead>
         <TableBody>
-          {userData.map(row => (
-            row.map(e => (
-              e?.value?.work_list === "Late night" ? <TableRow key={e.key}>
+          {userData.map((row, i) => (
+            row.map((e) => (
+              e?.value?.work_list === "Late night" ? <TableRow key={e.key} style={{backgroundColor: e?.value?.check_night_late > 0 ? '#FFC107' : i%2 === 1 ? '#FFF' : '#eee'}}>
                 <TableCell component="th" scope="row">
-                  {e.fristname}  {e.lastname}
+                  {e.firstname}  {e.lastname} 
                 </TableCell>
               <TableCell align="right">{e.role}</TableCell>
               <TableCell align="right">{moment(e?.value?.check_in).format('L HH:mm')}</TableCell>
