@@ -52,7 +52,7 @@ export const setCheckIn = (fetchIP, fetchMACAddress, user = localStorage.getItem
         "IP_ADDRESS": fetchIP || '',
     }
     sendLineNotify(
-       moment(list.check_in).format(' LL ')
+       moment(list.check_in).format(' LL เวลา HH:mm นาที ')
         + (localStorage.getItem('login_firstname') + ' ' + localStorage.getItem('login_lastname'))
         + (list.work_list === "Morning job" ? moment(moment(list.check_in).add(0, 'hours')).diff(moment('11.30', 'HH:mm').add(0, 'hours'), 'minutes') > 0 ? ' กะเช้า สาย ' : ' กะเช้า ตรงเวลา ' : newdate > 0 ? ' เข้างานกะดึก สาย ' + mewtime + ' นาที' : ' เข้างานกะดึก ตรงเวลา ')
         )
