@@ -16,12 +16,23 @@ export default function Home() {
     const history = useHistory();
 
     const onCheckIn = () => {
-        FirestoreService.setCheckIn(fetchIP, fetchMACAddress, )
+        FirestoreService.setCheckIn(fetchIP, fetchMACAddress)
     }
     const onCheckOut = () => {
         FirestoreService.setCheckOut(chkData?.[0])
     }
-    FirestoreService.fetchIP().then(e => setFetchIP(e))
+
+    setInterval(() => {
+        FirestoreService.fetchIP().then(e => setFetchIP(e))
+        FirestoreService.IP_ADDRESS().on("value", snapshot => {
+            const array = [];
+            snapshot.forEach(el => {
+                array.push(el.val());
+            });
+            setFetchIPAddress(array);
+        });
+    }, 1000);
+
     FirestoreService.fetchMacAddress().then(e => setFetchMACAddress(e))
 
     useEffect(() => {
@@ -30,14 +41,6 @@ export default function Home() {
         }
     })
     useEffect(() => {
-
-        FirestoreService.IP_ADDRESS().on("value", snapshot => {
-            const array = [];
-            snapshot.forEach(el => {
-                array.push(el.val());
-            });
-            setFetchIPAddress(array);
-        });
         FirestoreService.getCheckInUsers().orderByValue().on("value", snapshot => {
             const array = [];
             // For each data in the entry
