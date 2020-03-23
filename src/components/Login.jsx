@@ -142,18 +142,6 @@ export default function Login() {
                         >
                             Sign In
                         </Button>
-                        <Grid container>
-                            <Grid item xs>
-                                <Link onClick={() => history.push('addusers')} href="#" variant="body2">
-                                    Forgot password?
-                                </Link>
-                            </Grid>
-                            <Grid item>
-                                <Link onClick={() => history.push('addusers')} variant="body2">
-                                    {"Don't have an account? Sign Up"}
-                                </Link>
-                            </Grid>
-                        </Grid>
                         <Box mt={5}>
                             <Copyright />
                         </Box>
