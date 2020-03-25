@@ -15,6 +15,10 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
+const night_job = '07:00'
+const morning_job = '19:00'
+const time_work = 12.00
+
 export const getUsers = () => {
     return db.ref('tb_user')
 };
@@ -36,31 +40,33 @@ export const setCheckIn = (fetchIP, fetchMACAddress, user = localStorage.getItem
     let updates = {};
     let mac_address = fetchMACAddress;
     let chkin = moment(moment().format()).add(12, 'hours').format('HH:mm')
-    let chklate = moment('23:30', 'HH:mm').add(12, 'hours').format('HH:mm')
+    let chklate = moment(night_job, 'HH:mm').add(12, 'hours').format('HH:mm')
     let datechkin = moment(chkin, 'HH:mm')
     let datechklate = moment(chklate, 'HH:mm')
     let newdate = moment(datechkin).diff(datechklate, 'minutes')
-    let mewtime = newdate >= 60 ? (+(newdate/60).toFixed(2)).toString().replace('.', ' ชั่วโมง ') : newdate
+    let mewtime = newdate >= 60 ? (+(newdate / 60).toFixed(2)).toString().replace('.', ' ชั่วโมง ') : newdate
+
+    let newdateM = moment(moment().add(0, 'hours')).diff(moment(morning_job, 'HH:mm').add(0, 'hours'), 'minutes')
+    let mewtimeM = newdateM >= 60 ? (+(newdateM / 60).toFixed(2)).toString().replace('.', ' ชั่วโมง ') : newdateM
+
     const list = {
         "_key": newKey,
         "check_in": moment().format(),
         "check_night_late": newdate,
+        "check_morning_late": newdateM,
         "check_out": "",
         "check_user": user,
         "work_list": moment().format('HH') >= 6 && moment().format('HH') <= 18 ? "Morning job" : "Late night",
         "MAC_ADDRESS": mac_address || '',
         "IP_ADDRESS": fetchIP || '',
     }
-    sendLineNotify(
-       moment(list.check_in).format(' LL เวลา HH:mm นาที ')
-        + (localStorage.getItem('login_firstname') + ' ' + localStorage.getItem('login_lastname'))
-        + (list.work_list === "Morning job" ? moment(moment(list.check_in).add(0, 'hours')).diff(moment('11.30', 'HH:mm').add(0, 'hours'), 'minutes') > 0 ? ' กะเช้า สาย ' : ' กะเช้า ตรงเวลา ' : newdate > 0 ? ' เข้างานกะดึก สาย ' + mewtime + ' นาที' : ' เข้างานกะดึก ตรงเวลา ')
-        )
-        
 
-        
-        
-        
+    sendLineNotify(
+        moment(list.check_in).format(' LL เวลา HH:mm นาที ')
+        + (localStorage.getItem('login_firstname') + ' ')
+        + (list.work_list === "Morning job" ? moment(moment(list.check_in).add(0, 'hours')).diff(moment(morning_job, 'HH:mm').add(0, 'hours'), 'minutes') > 0 ? ' กะเช้า สาย ' + mewtimeM + ' นาที' : ' กะเช้า ตรงเวลา ' : newdate > 0 ? ' เข้างานกะดึก สาย ' + mewtime + ' นาที' : ' เข้างานกะดึก ตรงเวลา ')
+    )
+
     updates[`/tb_check/${localStorage.getItem('login__key')}/` + newKey] = list;
     return db.ref().update(updates)
 };
@@ -74,6 +80,22 @@ export const setCheckOut = (e) => {
         "check_user": e.check_user,
         "work_list": e.work_list
     }
+
+    // let newdateM = 469
+    // let mewtimeM = newdateM >= 60 ? (+(newdateM / 60).toFixed(2)).toString().replace('.', ' ชั่วโมง ') : newdateM
+    let newdateM = moment(list.check_out).diff(moment(list.check_in), 'minutes')
+    let mewtimeM = newdateM >= 60 ? (+(newdateM / 60).toFixed(2)) < time_work ? (+(time_work - (+(newdateM / 60).toFixed(2))).toFixed(2)).toString().replace('0.', '').replace('.', ' ชั่วโมง ') : (+(newdateM / 60).toFixed(2)).toString().replace('.', ' ชั่วโมง ') : ' 11 ชั่วโมง ' + (59 - +(((+(newdateM / 60).toFixed(2)).toString()).substring(2)))
+    // console.log(newdateM);
+    // console.log(mewtimeM[0] === '0' ? mewtimeM.slice(1) : mewtimeM);
+    // console.log(' 11 ชั่วโมง ' + (59 - +(((+(newdateM / 60).toFixed(2)).toString()).substring(2))));
+    console.log((newdateM < 720 ? ' ออกงานก่อนเวลา ' + (mewtimeM[0] === '0' ? mewtimeM.slice(1) : mewtimeM) + ' นาที ' : ' ออกงานตรงเวลา'));
+    
+    
+    sendLineNotify(
+        moment(list.check_out).format(' LL เวลา HH:mm นาที ')
+        + (localStorage.getItem('login_firstname') + ' ')
+        + (newdateM < 720 ? ' ออกงานก่อนเวลา ' + (mewtimeM[0] === '0' ? mewtimeM.slice(1) : mewtimeM) + ' นาที ' : ' ออกงานตรงเวลา')
+    )
     updates[`/tb_check/${localStorage.getItem('login__key')}/` + e._key] = list;
     return db.ref().update(updates)
 };
