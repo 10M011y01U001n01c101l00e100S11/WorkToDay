@@ -13,6 +13,7 @@ import AddUsersAppBar from "./components/AddUsersAppBar";
 import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
 import CheckHistory from "./components/CheckHistory";
 import WorkTracking from "./components/WorkTracking";
+import UpdateUsers from "./components/UpdateUsers";
 
 const theme = createMuiTheme({
 
@@ -44,8 +45,13 @@ export default function App() {
             {localStorage.getItem('login_role') === 'admin' ? <ProminentAppBar appBar={'ระบบแสดงข้อมูลผู้ใช้งาน'} /> : <AddUsersAppBar appBar={'ระบบแสดงข้อมูลผู้ใช้งาน'} />}
             <Users />
           </Route>
+          
           <Route path="/addusers">
             <AddUsers />
+          </Route>
+
+          <Route path="/updateusers">
+            <UpdateUsers />
           </Route>
 
           <Route path="/checkhistory">

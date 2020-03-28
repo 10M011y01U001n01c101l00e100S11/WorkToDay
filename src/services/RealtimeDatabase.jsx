@@ -171,6 +171,22 @@ export const addUsers = (username = '', password = '', lastname = '', img = '', 
 };
 
 
+export const updateUsers = (_key, firstname, img, lastname, password, username, role) => {
+    let updates = {};
+    const list = {
+        "_key": _key,
+        "firstname": firstname,
+        "img": img || 'https://f0.pngfuel.com/png/980/886/male-portrait-avatar-png-clip-art.png',
+        "lastname": lastname,
+        "password": password,
+        "username": username,
+        "role": role
+    }
+    updates[`/tb_user/` + _key] = list;
+    return db.ref().update(updates)
+};
+
+
 export const fetchIP = () => {
     return fetch('https://api.ipify.org/?format=json').then((e) => e.json()).then(e => (e.ip))
 }

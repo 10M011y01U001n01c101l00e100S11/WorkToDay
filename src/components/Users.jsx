@@ -8,6 +8,7 @@ import ButtonBase from '@material-ui/core/ButtonBase';
 
 import * as FirestoreService from '../services/RealtimeDatabase';
 import { Container } from "@material-ui/core";
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -33,6 +34,8 @@ const useStyles = makeStyles(theme => ({
 export default function Users() {
   const classes = useStyles();
   const [userData, setUserData] = useState([])
+  
+  const history = useHistory();
   document.title = 'Work To Day | Users';
   useEffect(() => {
     FirestoreService.getUsers().on("value", snapshot => {
@@ -52,9 +55,12 @@ export default function Users() {
       <div className={classes.root}>
         <center><h3>Users</h3></center>
         <Grid container spacing={3}>
-          {userData?.map(({ _key, firstname, img, lastname, password, username }) => (
+          {userData?.map(({ _key, firstname, img, lastname, password, username, role }) => (
 
-            <Grid item sm={6} md={4} lg={3} container>
+            <Grid item sm={6} md={4} lg={3} container onClick={(e) => {history.push({
+              pathname: '/updateusers',
+              state: { _key, firstname, img, lastname, password, username, role }
+            });history.go(0);} }>
               <Paper className={classes.paper}>
                 <Grid spacing={6}>
                   <Grid item>
