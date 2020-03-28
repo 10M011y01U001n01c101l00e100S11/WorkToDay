@@ -69,21 +69,30 @@ export default function Login() {
     const { value: password, bind: bindPassword } = useInput('');
 
     const history = useHistory();
-    const onSubmitLogin = () => FirestoreService.getUsersLogin().on('child_added', async function (data) {
-        if (data) {
-            if (username === data.val().username && password === data.val().password) {
-                await localStorage.setItem('login_check', true)
-                await localStorage.setItem('login_data', JSON.stringify(data.val()))
-                await localStorage.setItem('login__key', data.val()._key)
-                await localStorage.setItem('login_role', data.val().role)
-                await localStorage.setItem('login_firstname', data.val().firstname)
-                await localStorage.setItem('login_lastname', data.val().lastname)
-                await localStorage.setItem('login_img', data.val().img)
-                await localStorage.setItem('login_username', username)
-                await localStorage.setItem('login_password', password)
-                await history.push('home')
-                await history.go(0)
-            }
+    const onSubmitLogin = () => FirestoreService.getUsersLogin().orderByChild('username').equalTo(username).on('value', async function (data) {
+        console.log(data.val());
+        if (data.val()) {
+            data.forEach(async e => {
+                if (password === e.val().password) {
+                    await localStorage.setItem('login_check', true)
+                    await localStorage.setItem('login_data', JSON.stringify(e.val()))
+                    await localStorage.setItem('login__key', e.val()._key)
+                    await localStorage.setItem('login_role', e.val().role)
+                    await localStorage.setItem('login_firstname', e.val().firstname)
+                    await localStorage.setItem('login_lastname', e.val().lastname)
+                    await localStorage.setItem('login_img', e.val().img)
+                    await localStorage.setItem('login_username', username)
+                    await localStorage.setItem('login_password', password)
+                    await history.push('home')
+                    await history.go(0)
+                } else {
+                    Swal.fire(
+                        'Login false!',
+                        'users หรือ password',
+                        'warning'
+                    ).then(() => history.go())
+                }
+            })
         } else {
             Swal.fire(
                 'Login false!',
@@ -92,6 +101,30 @@ export default function Login() {
             ).then(() => history.go())
         }
     });
+
+    // const onSubmitLogin = () => FirestoreService.getUsersLogin().on('child_added', async function (data) {
+    //     if (data) {
+    //         if (username === data.val().username && password === data.val().password) {
+    //             await localStorage.setItem('login_check', true)
+    //             await localStorage.setItem('login_data', JSON.stringify(data.val()))
+    //             await localStorage.setItem('login__key', data.val()._key)
+    //             await localStorage.setItem('login_role', data.val().role)
+    //             await localStorage.setItem('login_firstname', data.val().firstname)
+    //             await localStorage.setItem('login_lastname', data.val().lastname)
+    //             await localStorage.setItem('login_img', data.val().img)
+    //             await localStorage.setItem('login_username', username)
+    //             await localStorage.setItem('login_password', password)
+    //             await history.push('home')
+    //             await history.go(0)
+    //         }
+    //     } else {
+    //         Swal.fire(
+    //             'Login false!',
+    //             'users หรือ password',
+    //             'warning'
+    //         ).then(() => history.go())
+    //     }
+    // });
 
     return (
         <Grid container component="main" className={classes.root}>

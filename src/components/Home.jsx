@@ -98,7 +98,8 @@ export default function Home() {
                         <Paper elevation={6}><h1 style={{ textAlign: '-webkit-center', paddingTop: '20px', paddingBottom: '20px' }}>{timeming.format('ss')}</h1></Paper>
                     </Grid>
                 </Grid>
-                {chkData?.[0]?.check_in && !chkData?.[0]?.check_out ? <><h2 style={{ marginTop: '18vh' }} align='center'>คุณเข้างานเวลา {moment(chkData?.[0]?.check_in).format('HH:mm')} นาที</h2></> : <><h2 style={{ marginTop: '18vh' }} align='center'>คุณยังไม่ได้บันทึกการเข้างาน</h2></>}
+                <><h2 style={{ marginTop: '9vh' }} align='center'>{localStorage.getItem('login_firstname')} {localStorage.getItem('login_lastname')}</h2></>
+                {chkData?.[0]?.check_in && !chkData?.[0]?.check_out ? <><h2 style={{ marginTop: '9vh' }} align='center'>คุณเข้างานเวลา {moment(chkData?.[0]?.check_in).format('HH:mm')} นาที</h2></> : <><h2 style={{ marginTop: '9vh' }} align='center'>คุณยังไม่ได้บันทึกการเข้างาน</h2></>}
             </Container>
             {!fetchIPAddress.find(({ ip }) => ip === fetchIP)?.ip ? <p></p> : !timemingCheckOut ? (chkData?.[0]?.check_in && (moment().diff(moment(chkData?.[0]?.check_in), 'seconds') < 18000)) ?
                 <Button
