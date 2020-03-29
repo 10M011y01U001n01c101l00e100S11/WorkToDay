@@ -4,7 +4,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-import MenuIcon from '@material-ui/icons/Menu';
+// import MenuIcon from '@material-ui/icons/Menu';
 import { useHistory } from 'react-router-dom';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import HistoryIcon from '@material-ui/icons/History';
@@ -42,14 +42,14 @@ export default function AddUsersAppBar({appBar}) {
     <div className={classes.root}>
       <AppBar position="static">
         <Toolbar className={classes.toolbar}>
-          <IconButton
+          {/* <IconButton
             edge="start"
             className={classes.menuButton}
             color="inherit"
             aria-label="open drawer"
           >
             <MenuIcon />
-          </IconButton>
+          </IconButton> */}
 
           <Typography className={classes.title} variant="h5" noWrap>
             {appBar}
