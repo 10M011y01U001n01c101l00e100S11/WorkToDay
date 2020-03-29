@@ -26,6 +26,25 @@ export const getUsers = () => {
 export const getWorkingTime = () => {
     return db.ref('tb_working_time')
 };
+
+export const setWorkingTime = (time_in_morning, time_out_morning, time_in_night, time_out_night) => {
+    let updates = {};
+    const list = [{
+        "key": '0',
+        "savetime": 0,
+        "time_in": time_in_morning,
+        "time_out": time_out_morning,
+        "work": 'Morning job'
+    }, {
+        "key": '1',
+        "savetime": 12,
+        "time_in": time_in_night,
+        "time_out": time_out_night,
+        "work": 'Late night'
+    }]
+    updates[`/tb_working_time/`] = list;
+    return db.ref().update(updates)
+};
 // Morning job
 // Late night
 
@@ -47,9 +66,9 @@ export const setCheckIn = (fetchIP, fetchMACAddress, workingTime, user = localSt
     let mac_address = fetchMACAddress;
 
     let work_list = moment().format('HH') >= 4 && moment().format('HH') <= 16 ? "Morning job" : "Late night"
-    let chk_work_list_night = workingTime.find(({work})=> work === "Late night")
-    let chk_work_list_morningt = workingTime.find(({work})=> work === "Morning job")
-    
+    let chk_work_list_night = workingTime.find(({ work }) => work === "Late night")
+    let chk_work_list_morningt = workingTime.find(({ work }) => work === "Morning job")
+
 
     let chkin = moment(moment().format()).add(chk_work_list_night.savetime, 'hours').format('HH:mm')
     let chklate = moment(chk_work_list_night.time_in, 'HH:mm').add(chk_work_list_night.savetime, 'hours').format('HH:mm')
@@ -60,7 +79,7 @@ export const setCheckIn = (fetchIP, fetchMACAddress, workingTime, user = localSt
 
     let newdateM = moment(moment().add(0, 'hours')).diff(moment(chk_work_list_morningt.time_in, 'HH:mm').add(chk_work_list_morningt.savetime, 'hours'), 'minutes')
     let mewtimeM = newdateM >= 60 ? ((+(newdateM / 60).toFixed(2)).toString()).replace('.', ' ชั่วโมง ') : newdateM
-    
+
     // .add(-12, 'hour')
     const list = {
         "_key": newKey,
@@ -75,7 +94,7 @@ export const setCheckIn = (fetchIP, fetchMACAddress, workingTime, user = localSt
     }
 
     // console.log(list);
-    
+
 
     // console.log(
     //     moment(list.check_in).format(' LL เวลา HH:mm นาที ')
@@ -83,7 +102,7 @@ export const setCheckIn = (fetchIP, fetchMACAddress, workingTime, user = localSt
     //     + (list.work_list === "Morning job" ? moment(moment(list.check_in).add(0, 'hours')).diff(moment(chk_work_list_morningt.time_in, 'HH:mm').add(chk_work_list_morningt.savetime, 'hours'), 'minutes') > 0 ? ' กะเช้า สาย ' + mewtimeM + ' นาที' : ' กะเช้า ตรงเวลา ' : newdate > 0 ? ' เข้างานกะดึก สาย ' + mewtime + ' นาที' : ' เข้างานกะดึก ตรงเวลา ')
     // )
     // console.log(moment(moment(list.check_in).add(0, 'hours')).diff(moment(chk_work_list_morningt.time_in, 'HH:mm').add(chk_work_list_morningt.savetime, 'hours'), 'minutes'));
-   
+
 
 
     // console.log(
@@ -93,10 +112,10 @@ export const setCheckIn = (fetchIP, fetchMACAddress, workingTime, user = localSt
     //     )
 
     sendLineNotify(
-            moment(list.check_in).format(' LL เวลา HH:mm นาที ')
-            + (localStorage.getItem('login_firstname') + ' ')
-            + (list.work_list === "Morning job" ? moment(moment(list.check_in).add(0, 'hours')).diff(moment(chk_work_list_morningt.time_in, 'HH:mm').add(chk_work_list_morningt.savetime, 'hours'), 'minutes') > 0 ? ' กะเช้า สาย ' + mewtimeM + ' นาที' : ' กะเช้า ตรงเวลา ' : newdate > 0 ? ' เข้างานกะดึก สาย ' + mewtime + ' นาที' : ' เข้างานกะดึก ตรงเวลา ')
-        )
+        moment(list.check_in).format(' LL เวลา HH:mm นาที ')
+        + (localStorage.getItem('login_firstname') + ' ')
+        + (list.work_list === "Morning job" ? moment(moment(list.check_in).add(0, 'hours')).diff(moment(chk_work_list_morningt.time_in, 'HH:mm').add(chk_work_list_morningt.savetime, 'hours'), 'minutes') > 0 ? ' กะเช้า สาย ' + mewtimeM + ' นาที' : ' กะเช้า ตรงเวลา ' : newdate > 0 ? ' เข้างานกะดึก สาย ' + mewtime + ' นาที' : ' เข้างานกะดึก ตรงเวลา ')
+    )
 
     updates[`/tb_check/${localStorage.getItem('login__key')}/` + newKey] = list;
     return db.ref().update(updates)
@@ -104,9 +123,9 @@ export const setCheckIn = (fetchIP, fetchMACAddress, workingTime, user = localSt
 
 export const setCheckOut = (e, workingTime) => {
     let updates = {};
-    let chk_work_list_night = workingTime.find(({work})=> work === "Late night")
-    let chk_work_list_morningt = workingTime.find(({work})=> work === "Morning job")
-    
+    let chk_work_list_night = workingTime.find(({ work }) => work === "Late night")
+    let chk_work_list_morningt = workingTime.find(({ work }) => work === "Morning job")
+
     const list = {
         "_key": e._key,
         "check_in": e.check_in,
@@ -119,8 +138,8 @@ export const setCheckOut = (e, workingTime) => {
         "IP_ADDRESS": e?.IP_ADDRESS,
     }
 
-    let morning_job = moment(chk_work_list_morningt.time_out,'HH:mm').diff(moment(), 'minutes') > 0 ? ' ออกงานก่อนเวลา ' + moment(chk_work_list_morningt.time_out,'HH:mm').fromNow(true) : 'ออกงานตรงเวลา'
-    let night_job = moment(chk_work_list_night.time_out,'HH:mm').diff(moment(), 'minutes') > 0 ? ' ออกงานก่อนเวลา ' + moment(chk_work_list_night.time_out,'HH:mm').fromNow(true) : 'ออกงานตรงเวลา'
+    let morning_job = moment(chk_work_list_morningt.time_out, 'HH:mm').diff(moment(), 'minutes') > 0 ? ' ออกงานก่อนเวลา ' + moment(chk_work_list_morningt.time_out, 'HH:mm').fromNow(true) : 'ออกงานตรงเวลา'
+    let night_job = moment(chk_work_list_night.time_out, 'HH:mm').diff(moment(), 'minutes') > 0 ? ' ออกงานก่อนเวลา ' + moment(chk_work_list_night.time_out, 'HH:mm').fromNow(true) : 'ออกงานตรงเวลา'
     // let newdateM = 469
     // let mewtimeM = newdateM >= 60 ? (+(newdateM / 60).toFixed(2)).toString().replace('.', ' ชั่วโมง ') : newdateM
     // let newdateM = moment(list.check_out).diff(moment(list.check_in), 'minutes')
@@ -134,7 +153,7 @@ export const setCheckOut = (e, workingTime) => {
     // console.log(moment(chk_work_list_morningt.time_out,'HH:mm').diff(moment(), 'minutes') > 0 ? ' ออกงานก่อนเวลา ' + moment(chk_work_list_morningt.time_out,'HH:mm').fromNow(true) : 'ออกงานตรงเวลา');
     // console.log(moment('07:00','HH:mm').diff(moment(), 'minutes') > 0 );
     // console.log(e.work_list === "Morning job" ? (morning_job) : (night_job));
-    
+
 
     // console.log(
     //     moment(list.check_out).format(' LL เวลา HH:mm นาที ')
@@ -143,7 +162,7 @@ export const setCheckOut = (e, workingTime) => {
     // )
     // console.log(e.work_list);
     // console.log(moment(chk_work_list_night.time_out,'HH:mm').diff(moment(), 'minutes'));
-    
+
 
     sendLineNotify(
         moment(list.check_out).format(' LL เวลา HH:mm นาที ')

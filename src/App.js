@@ -14,6 +14,8 @@ import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
 import CheckHistory from "./components/CheckHistory";
 import WorkTracking from "./components/WorkTracking";
 import UpdateUsers from "./components/UpdateUsers";
+import TimeTracking from "./components/TimeTracking";
+import UpdateMyUser from "./components/UpdateMyUser";
 
 const theme = createMuiTheme({
 
@@ -54,9 +56,19 @@ export default function App() {
             <UpdateUsers />
           </Route>
 
+          <Route path="/timetracking">
+            {localStorage.getItem('login_role') === 'admin' ? <ProminentAppBar appBar={'ระบบแก้ไขเวลาเข้าออกงาน'} /> : <AddUsersAppBar appBar={'ระบบแก้ไขเวลาเข้าออกงาน'} />}
+            <TimeTracking />
+          </Route>
+
           <Route path="/checkhistory">
             {localStorage.getItem('login_role') === 'admin' ? <ProminentAppBar appBar={'ระบบแสดงประวัติการเข้าออกงาน'} /> : <AddUsersAppBar appBar={'ระบบแสดงประวัติการเข้าออกงาน'} />}
             <CheckHistory />
+          </Route>
+
+          <Route path="/updatemyuser">
+            {localStorage.getItem('login_role') === 'admin' ? <ProminentAppBar appBar={'ระบบแก้ไขข้อมูลผู้ใช้งาน'} /> : <AddUsersAppBar appBar={'ระบบแก้ไขข้อมูลผู้ใช้งาน'} />}
+            <UpdateMyUser />
           </Route>
 
           <Route path="/worktracking">

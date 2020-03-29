@@ -9,6 +9,7 @@ import { useHistory } from 'react-router-dom';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import HistoryIcon from '@material-ui/icons/History';
 import HomeIcon from '@material-ui/icons/Home';
+import PersonIcon from '@material-ui/icons/Person';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -61,6 +62,10 @@ export default function AddUsersAppBar({appBar}) {
 
           <IconButton aria-label="search" color="inherit" onClick={() => history.push('checkhistory')}>
             <HistoryIcon />
+          </IconButton>
+
+          <IconButton aria-label="search" color="inherit" onClick={() => history.push('updatemyuser')}>
+            <PersonIcon />
           </IconButton>
 
           <IconButton aria-label="search" color="inherit" onClick={() => {localStorage.clear();history.push('login')}}>

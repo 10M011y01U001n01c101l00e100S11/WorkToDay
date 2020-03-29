@@ -12,6 +12,7 @@ import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import PeopleIcon from '@material-ui/icons/People';
 import HistoryIcon from '@material-ui/icons/History';
 import ListAltIcon from '@material-ui/icons/ListAlt';
+import QueryBuilderIcon from '@material-ui/icons/QueryBuilder';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -62,6 +63,10 @@ export default function ProminentAppBar({appBar}) {
 
           <IconButton aria-label="search" color="inherit" onClick={()=>history.push('')}>
             <HomeIcon />
+          </IconButton>
+
+          <IconButton aria-label="search" color="inherit" onClick={()=>history.push('timetracking')}>
+            <QueryBuilderIcon />
           </IconButton>
 
           <IconButton aria-label="search" color="inherit" onClick={()=>history.push('worktracking')}>
