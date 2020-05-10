@@ -35,7 +35,7 @@ export default function Home() {
     FirestoreService.fetchMacAddress().then(e => setFetchMACAddress(e))
 
     useEffect(() => {
-        if (!localStorage.getItem('login_check')) {
+        if (localStorage.getItem('login_check') !== '2.0.1') {
             history.push('login')
         }
     })
@@ -73,7 +73,11 @@ export default function Home() {
 
     const chkData = [userCheckData.reverse().find(({ check_out }) => check_out === '') || 0]
 
-
+    if (chkData?.[0]?.check_in) {
+        if (moment().diff(moment(chkData?.[0]?.check_in), 'hours') > 14) {
+            FirestoreService.setCheckOutNoLine(chkData?.[0]).then(()=>history.go())
+        }
+    }
 
     return (
         <>
@@ -101,7 +105,7 @@ export default function Home() {
                 <><h2 style={{ marginTop: '7vh' }} align='center'>{localStorage.getItem('login_firstname')} {localStorage.getItem('login_lastname')}</h2></>
                 {chkData?.[0]?.check_in && !chkData?.[0]?.check_out ? <><h2 style={{ marginTop: '7vh' }} align='center'>เข้างานเวลา {moment(chkData?.[0]?.check_in).format('HH:mm')} นาที</h2></> : <><h2 style={{ marginTop: '7vh' }} align='center'>ยังไม่ได้บันทึกการเข้างาน</h2></>}
             </Container>
-            {!fetchIPAddress.find(({ ip }) => ip === fetchIP)?.ip ? <p></p> : !timemingCheckOut ? (chkData?.[0]?.check_in && (moment().diff(moment(chkData?.[0]?.check_in), 'seconds') < 18000)) ?
+            {fetchIPAddress.find(({ ip }) => ip === fetchIP)?.ip ? <p></p> : !timemingCheckOut ? (chkData?.[0]?.check_in && (moment().diff(moment(chkData?.[0]?.check_in), 'seconds') < 18000)) ?
                 <Button
                     type="button"
                     fullWidth
@@ -137,7 +141,7 @@ export default function Home() {
                     style={{ bottom: 0, position: 'fixed' }}
                 >
                     Warnning Check Out
-                </Button> 
+                </Button>
             }
         </>
     );

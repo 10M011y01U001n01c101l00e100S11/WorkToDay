@@ -23,7 +23,7 @@ export default function CheckHistory() {
     }, [])
 
     useEffect(() => {
-        if (!localStorage.getItem('login_check')) {
+        if (localStorage.getItem('login_check') !== '2.0.1') {
             history.push('login')
         }
     })

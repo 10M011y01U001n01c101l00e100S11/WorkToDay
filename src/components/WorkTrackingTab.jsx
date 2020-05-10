@@ -8,6 +8,7 @@ import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import WorkTrackingMorning from './WorkTrackingMorning';
 import WorkTrackingNight from './WorkTrackingNight';
+import WorkTrackingAfternoon from './WorkTrackingAfternoon';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -87,13 +88,17 @@ export default function WorkTrackingTab({userData}) {
           aria-label="nav tabs example"
         >
           <LinkTab label="Morning Shift" href="/drafts" {...a11yProps(0)} />
-          <LinkTab label="Night Shift" href="/trash" {...a11yProps(1)} />
+          <LinkTab label="Afternoon Shift" href="/trash" {...a11yProps(1)} />
+          <LinkTab label="Night Shift" href="/trash" {...a11yProps(2)} />
         </Tabs>
       </AppBar>
       <TabPanel value={value} index={0}>
         <WorkTrackingMorning userData={userData} />
       </TabPanel>
       <TabPanel value={value} index={1}>
+        <WorkTrackingAfternoon userData={userData} />
+      </TabPanel>
+      <TabPanel value={value} index={2}>
         <WorkTrackingNight userData={userData} />
       </TabPanel>
     </div>

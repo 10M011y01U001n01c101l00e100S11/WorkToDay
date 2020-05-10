@@ -38,7 +38,7 @@ export default function ProminentAppBar({appBar}) {
   const history = useHistory();
 
   useEffect(() => {
-    if (!localStorage.getItem('login_check')) {
+    if (localStorage.getItem('login_check') !== '2.0.1') {
       history.push('login')
     }
     fetch('https://api.ipify.org/?format=json')

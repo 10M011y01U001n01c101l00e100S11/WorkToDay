@@ -74,7 +74,7 @@ export default function Login() {
         if (data.val()) {
             data.forEach(async e => {
                 if (password === e.val().password) {
-                    await localStorage.setItem('login_check', true)
+                    await localStorage.setItem('login_check', '2.0.1')
                     await localStorage.setItem('login_data', JSON.stringify(e.val()))
                     await localStorage.setItem('login__key', e.val()._key)
                     await localStorage.setItem('login_role', e.val().role)

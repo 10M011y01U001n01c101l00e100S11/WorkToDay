@@ -12,12 +12,16 @@ export default function TimeTracking() {
     const [timeOutMorning, setTimeOutMorning] = useState('');
     const [timeInNight, setTimeInNight] = useState('');
     const [timeOutNight, setTimeOutNight] = useState('');
+    const [timeInAfternoon, setTimeInAfternoon] = useState('');
+    const [timeOutAfternoon, setTimeOutAfternoon] = useState('');
 
     useEffect(() => {
         FirestoreService.getWorkingTime().on('value', e => {
             setTimeTracking(e.val())
             setTimeInMorning(e.val().find(({ work }) => work === 'Morning job').time_in)
             setTimeOutMorning(e.val().find(({ work }) => work === 'Morning job').time_out)
+            setTimeInAfternoon(e.val().find(({ work }) => work === 'Afternoon job').time_in)
+            setTimeOutAfternoon(e.val().find(({ work }) => work === 'Afternoon job').time_out)
             setTimeInNight(e.val().find(({ work }) => work === 'Late night').time_in)
             setTimeOutNight(e.val().find(({ work }) => work === 'Late night').time_out)
 
@@ -64,9 +68,24 @@ export default function TimeTracking() {
                             </Grid>
                         ))
                     }
+                    {
+                        timeTracking.filter(({ work }) => work === 'Afternoon job').map((e) => (
+                            <Grid container lg={12} spacing={3}>
+                                <Grid item xs={12} sm={4} md={2}>
+                                    <TextField defaultValue={e.work} InputProps={{ readOnly: true }} label='Time Name' fullWidth />
+                                </Grid>
+                                <Grid item xs={12} sm={4} md={2}>
+                                    <TextField required defaultValue={e.time_in} label="TimeIn" onChange={(e) => setTimeInAfternoon(e.target.value)} fullWidth type="time" />
+                                </Grid>
+                                <Grid item xs={12} sm={4} md={2}>
+                                    <TextField required defaultValue={e.time_out} label="TimeIn" onChange={(e) => setTimeOutAfternoon(e.target.value)} fullWidth type="time" />
+                                </Grid>
+                            </Grid>
+                        ))
+                    }
                     <br />
                     <Grid item lg={12}>
-                        <Button type="button" fullWidth variant="contained" onClick={() => { FirestoreService.setWorkingTime(timeInMorning, timeOutMorning, timeInNight, timeOutNight); Swal.fire( 'Good job!', 'แก้ไขข้อมูลเวลาการเข้าออกงานสำเร็จ!', 'success') }} color="primary">แก้ไขข้อมูล</Button>
+                        <Button type="button" fullWidth variant="contained" onClick={() => { FirestoreService.setWorkingTime(timeInMorning, timeOutMorning, timeInNight, timeOutNight, timeInAfternoon, timeOutAfternoon); Swal.fire( 'Good job!', 'แก้ไขข้อมูลเวลาการเข้าออกงานสำเร็จ!', 'success') }} color="primary">แก้ไขข้อมูล</Button>
                     </Grid>
                 </form>
             </Container>
