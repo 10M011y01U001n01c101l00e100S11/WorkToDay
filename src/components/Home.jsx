@@ -105,7 +105,7 @@ export default function Home() {
                 <><h2 style={{ marginTop: '7vh' }} align='center'>{localStorage.getItem('login_firstname')} {localStorage.getItem('login_lastname')}</h2></>
                 {chkData?.[0]?.check_in && !chkData?.[0]?.check_out ? <><h2 style={{ marginTop: '7vh' }} align='center'>เข้างานเวลา {moment(chkData?.[0]?.check_in).format('HH:mm')} นาที</h2></> : <><h2 style={{ marginTop: '7vh' }} align='center'>ยังไม่ได้บันทึกการเข้างาน</h2></>}
             </Container>
-            {fetchIPAddress.find(({ ip }) => ip === fetchIP)?.ip ? <p></p> : !timemingCheckOut ? (chkData?.[0]?.check_in && (moment().diff(moment(chkData?.[0]?.check_in), 'seconds') < 18000)) ?
+            {!fetchIPAddress.find(({ ip }) => ip === fetchIP)?.ip ? <p></p> : !timemingCheckOut ? (chkData?.[0]?.check_in && (moment().diff(moment(chkData?.[0]?.check_in), 'seconds') < 18000)) ?
                 <Button
                     type="button"
                     fullWidth
