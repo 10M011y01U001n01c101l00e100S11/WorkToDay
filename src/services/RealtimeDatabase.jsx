@@ -68,7 +68,7 @@ export const getCheckInUsers = () => {
     return db.ref('tb_check').child(localStorage.getItem('login__key'))
 };
 
-export const setCheckIn = (fetchIP, fetchMACAddress, workingTime, user = localStorage.getItem('login_username'), pass = localStorage.getItem('login_password')) => {
+export const setCheckIn = (fetchIP, fetchMACAddress, workingTime, dataUri, user = localStorage.getItem('login_username'), pass = localStorage.getItem('login_password')) => {
     let newKey = db.ref().child(`tb_check/${localStorage.getItem('login__key')}`).push().key;
     let updates = {};
     let mac_address = fetchMACAddress;
@@ -107,6 +107,8 @@ export const setCheckIn = (fetchIP, fetchMACAddress, workingTime, user = localSt
         "work_list": work_list,
         "MAC_ADDRESS": mac_address || '',
         "IP_ADDRESS": fetchIP || '',
+        "check_in_photo": dataUri,
+        "check_out_photo": ''
     }
 
     // sendLineNotify(
@@ -147,7 +149,7 @@ export const setCheckIn = (fetchIP, fetchMACAddress, workingTime, user = localSt
     return db.ref().update(updates)
 };
 
-export const setCheckOut = (e, workingTime) => {
+export const setCheckOut = (e, workingTime, dataUri) => {
     let updates = {};
     let chk_work_list_night = workingTime.find(({ work }) => work === "Late night")
     let chk_work_list_morningt = workingTime.find(({ work }) => work === "Morning job")
@@ -163,6 +165,8 @@ export const setCheckOut = (e, workingTime) => {
         "work_list": e.work_list,
         "MAC_ADDRESS": e?.MAC_ADDRESS,
         "IP_ADDRESS": e?.IP_ADDRESS,
+        "check_in_photo": e.check_in_photo,
+        "check_out_photo": dataUri
     }
 
     let afternoon_job = moment(chk_work_list_afternoon.time_out, 'HH:mm').diff(moment(), 'minutes') > 0 ? ' ออกงานก่อนเวลา ' + moment(chk_work_list_afternoon.time_out, 'HH:mm').fromNow(true) : 'ออกงานตรงเวลา'

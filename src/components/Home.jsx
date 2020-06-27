@@ -5,6 +5,9 @@ import moment from "moment";
 import { useHistory } from "react-router-dom";
 import Paper from '@material-ui/core/Paper';
 
+import Camera from 'react-html5-camera-photo';
+import 'react-html5-camera-photo/build/css/index.css';
+
 
 export default function Home() {
     document.title = 'Work To Day';
@@ -17,15 +20,15 @@ export default function Home() {
     const [timemingCheckOut, setTimemingCheckOut] = useState(false)
     const history = useHistory();
 
-    const onCheckIn = () => {
-        FirestoreService.setCheckIn(fetchIP, fetchMACAddress, workingTime)
+    const onCheckIn = (dataUri) => {
+        FirestoreService.setCheckIn(fetchIP, fetchMACAddress, workingTime, dataUri)
         setTimeout(() => {
             history.go()
         }, 10000);
     }
-    const onCheckOut = () => {
+    const onCheckOut = (dataUri) => {
         setTimemingCheckOut(true)
-        FirestoreService.setCheckOut(chkData?.[0], workingTime)
+        FirestoreService.setCheckOut(chkData?.[0], workingTime, dataUri)
         setTimeout(() => {
             history.go()
         }, 60000);
@@ -75,8 +78,19 @@ export default function Home() {
 
     if (chkData?.[0]?.check_in) {
         if (moment().diff(moment(chkData?.[0]?.check_in), 'hours') > 14) {
-            FirestoreService.setCheckOutNoLine(chkData?.[0]).then(()=>history.go())
+            FirestoreService.setCheckOutNoLine(chkData?.[0]).then(() => history.go())
         }
+    }
+
+    function handleTakePhotoChkIn(dataUri) {
+        // Do stuff with the photo...
+        console.log('takePhoto', dataUri);
+        onCheckIn(dataUri)
+    }
+    function handleTakePhotoChkOut(dataUri) {
+        // Do stuff with the photo...
+        console.log('takePhoto', dataUri);
+        onCheckOut(dataUri)
     }
 
     return (
@@ -105,7 +119,13 @@ export default function Home() {
                 <><h2 style={{ marginTop: '7vh' }} align='center'>{localStorage.getItem('login_firstname')} {localStorage.getItem('login_lastname')}</h2></>
                 {chkData?.[0]?.check_in && !chkData?.[0]?.check_out ? <><h2 style={{ marginTop: '7vh' }} align='center'>เข้างานเวลา {moment(chkData?.[0]?.check_in).format('HH:mm')} นาที</h2></> : <><h2 style={{ marginTop: '7vh' }} align='center'>ยังไม่ได้บันทึกการเข้างาน</h2></>}
             </Container>
-            {!fetchIPAddress.find(({ ip }) => ip === fetchIP)?.ip ? <p></p> : !timemingCheckOut ? (chkData?.[0]?.check_in && (moment().diff(moment(chkData?.[0]?.check_in), 'seconds') < 18000)) ?
+
+{/* 
+            <Camera
+                onTakePhoto={(dataUri) => { handleTakePhoto(dataUri); }}
+            />
+
+            {fetchIPAddress.find(({ ip }) => ip === fetchIP)?.ip ? <p></p> : !timemingCheckOut ? (chkData?.[0]?.check_in && (moment().diff(moment(chkData?.[0]?.check_in), 'seconds') < 18000)) ?
                 <Button
                     type="button"
                     fullWidth
@@ -134,6 +154,31 @@ export default function Home() {
                     >
                         Check In
                 </Button> : <Button
+                    type="button"
+                    fullWidth
+                    variant="contained"
+                    color="inherit"
+                    style={{ bottom: 0, position: 'fixed' }}
+                >
+                    Warnning Check Out
+                </Button>
+            } */}
+
+            {fetchIPAddress.find(({ ip }) => ip === fetchIP)?.ip ? <p></p> : !timemingCheckOut ? (chkData?.[0]?.check_in && (moment().diff(moment(chkData?.[0]?.check_in), 'seconds') < 18000)) ?
+                <Button
+                    type="button"
+                    fullWidth
+                    variant="contained"
+                    color="inherit"
+                    style={{ bottom: 0, position: 'fixed' }}
+                >
+                    Warnning Check In
+                </Button> :
+                chkData?.[0]?.check_in && !chkData?.[0]?.check_out ? <Camera
+                    onTakePhoto={(dataUri) => { handleTakePhotoChkOut(dataUri); }}
+                /> : <Camera
+                    onTakePhoto={(dataUri) => { handleTakePhotoChkIn(dataUri); }}
+                />: <Button
                     type="button"
                     fullWidth
                     variant="contained"

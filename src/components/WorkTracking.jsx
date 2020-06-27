@@ -80,7 +80,7 @@ export default function WorkTracking() {
     })
 
   return (
-    <Container>
+    <Container maxWidth='xl'>
       <div className={classes.root}>
 
 

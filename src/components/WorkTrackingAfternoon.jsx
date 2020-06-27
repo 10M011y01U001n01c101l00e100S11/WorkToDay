@@ -15,7 +15,7 @@ const useStyles = makeStyles({
   },
 });
 
-export default function WorkTrackingAfternoon({userData}) {
+export default function WorkTrackingAfternoon({ userData }) {
   const classes = useStyles();
 
   return (
@@ -26,21 +26,26 @@ export default function WorkTrackingAfternoon({userData}) {
             <TableCell>ชื่อ - นามสกุล</TableCell>
             <TableCell align="right">สถานะ</TableCell>
             <TableCell align="right">เข้างาน</TableCell>
+            <TableCell></TableCell>
             <TableCell align="right">เลิกงาน</TableCell>
+            <TableCell></TableCell>
             <TableCell align="right">ระยะเวลา</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {userData.map((row, i) => (
             row.map((e) => (
-              e?.value?.work_list === "Afternoon job" ? <TableRow key={e.key} style={{backgroundColor: e?.value?.check_night_afternoon > 0 ? '#FFC107' : i%2 === 1 ? '#FFF' : '#eee'}}>
+              e?.value?.work_list === "Afternoon job" ? <TableRow key={e.key} style={{ backgroundColor: e?.value?.check_night_afternoon > 0 ? '#FFC107' : i % 2 === 1 ? '#FFF' : '#eee' }}>
+
                 <TableCell component="th" scope="row">
-                  {e.firstname}  {e.lastname} 
+                  {e.firstname}  {e.lastname}
                 </TableCell>
-              <TableCell align="right">{e.role}</TableCell>
-              <TableCell align="right">{moment(e?.value?.check_in).format('L HH:mm')}</TableCell>
-              <TableCell align="right">{e?.value?.check_out && moment(e?.value?.check_out).format('L HH:mm')}</TableCell>
-              <TableCell align="right">{e?.value?.check_out && moment(e?.value?.check_out).diff(moment(e?.value?.check_in), 'hours') + ' ชั่วโมง'} </TableCell>
+                <TableCell align="center">{e.role}</TableCell>
+                <TableCell align="right">{moment(e?.value?.check_in).format('L HH:mm')}</TableCell>
+                <TableCell align="center"><img src={e?.value?.check_in_photo} width="200px" alt=''/></TableCell>
+                <TableCell align="right">{e?.value?.check_out && moment(e?.value?.check_out).format('L HH:mm')}</TableCell>
+                <TableCell align="center"><img src={e?.value?.check_out_photo} width="200px" alt=''/></TableCell>
+                <TableCell align="right">{e?.value?.check_out && moment(e?.value?.check_out).diff(moment(e?.value?.check_in), 'hours') + ' ชั่วโมง'} </TableCell>
               </TableRow> : ''
             ))
           ))}
