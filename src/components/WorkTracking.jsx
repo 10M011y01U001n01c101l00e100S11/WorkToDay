@@ -63,7 +63,7 @@ export default function WorkTracking() {
     })
   }, [])
   
-  // console.log(userData);
+  console.log(userData);
   // console.log(userDetail);
   
     // eslint-disable-next-line

@@ -18,7 +18,30 @@ const db = firebase.database();
 // const night_job = '07:00'
 // const chk_work_list_morningt.time_in = '19:00'
 // const time_work = 12.00
-
+export function dataURItoBlob(dataURI) {
+    // convert base64 to raw binary data held in a string
+    // doesn't handle URLEncoded DataURIs - see SO answer #6850276 for code that does this
+    var byteString = atob(dataURI.split(',')[1]);
+  
+    // separate out the mime component
+    var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0]
+  
+    // write the bytes of the string to an ArrayBuffer
+    var ab = new ArrayBuffer(byteString.length);
+  
+    // create a view into the buffer
+    var ia = new Uint8Array(ab);
+  
+    // set the bytes of the buffer to the correct values
+    for (var i = 0; i < byteString.length; i++) {
+        ia[i] = byteString.charCodeAt(i);
+    }
+  
+    // write the ArrayBuffer to a blob, and you're done
+    var blob = new Blob([ab], {type: mimeString});
+    return blob;
+  
+  } 
 export const getUsers = () => {
     return db.ref('tb_user')
 };
@@ -134,7 +157,7 @@ export const setCheckIn = (fetchIP, fetchMACAddress, workingTime, dataUri, user 
         newdateA > 0 ?
         ' เข้างานกะบ่าย สาย ' + mewtimeA + ' นาที'
         : ' เข้างานกะบ่าย ตรงเวลา ' : ''
-        )
+        ), dataURItoBlob(dataUri)
     )
 
     // : list.work_list === "Late night" ? newdate > 0 ?
@@ -179,7 +202,7 @@ export const setCheckOut = (e, workingTime, dataUri) => {
         + (localStorage.getItem('login_firstname') + ' ')
         + (e.work_list === "Morning job" ? (morning_job) : '')
         + (e.work_list === "Late night" ? (night_job) : '')
-        + (e.work_list === "Afternoon job" ? (afternoon_job) : '')
+        + (e.work_list === "Afternoon job" ? (afternoon_job) : ''), dataURItoBlob(dataUri)
     )
     updates[`/tb_check/${localStorage.getItem('login__key')}/` + e._key] = list;
     return db.ref().update(updates)
@@ -258,10 +281,27 @@ export const fetchMacAddress = () => {
         .catch(error => error);
 }
 
-export const sendLineNotify = (list) => {
+export const sendLineNotify = (list, imageFile = null) => {
     // eslint-disable-next-line
-    fetch("https://work-at-home.herokuapp.com/linenoti?message=" + list)
-        .then(response => response.text())
+    // fetch("https://work-at-home.herokuapp.com/linenoti?message=" + list)
+    //     .then(response => response.text())
+
+
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "multipart/form-dat");
+
+    var formdata = new FormData();
+    formdata.append("message", list);
+    imageFile && formdata.append("imageFile", imageFile, "imageFile.png");
+
+    var requestOptions = {
+    method: 'POST',
+    headers: myHeaders,
+    body: formdata,
+    };
+
+    fetch("https://notify-api.line.me/api/notify", requestOptions)
+    .then(response => response.text())
 }
 
 export const IP_ADDRESS = () => {
